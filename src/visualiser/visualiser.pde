@@ -1,16 +1,10 @@
 import java.util.List;
 
-public static final int WINDOW_WIDTH = 1000;
-public static final int WINDOW_HEIGHT = 1000;
+public static final int WINDOW_WIDTH = 1600;
+public static final int WINDOW_HEIGHT = 1600;
 
-public class Coord {
-  public final float x;
-  public final float y;
-  public Coord(float x, float y) {
-    this.x = x;
-    this.y = y;
-  }
-}
+// no. of pixels per unit of drawing space
+public static final int PPU = 90;
 
 void settings() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -24,10 +18,9 @@ void setup() {
   smooth();
   noStroke();
   
-  roomCanvas = new Canvas(50, 50, 500, 500);
+  roomCanvas = new Canvas(3*PPU, 3*PPU, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
   
   ArrayList<Float> coordinates = new ArrayList<Float>();
-  float max_coord = 0, min_coord = 0;
   String[] lines = loadStrings("output.txt");
   for (String line : lines) {
     String filteredLine = line.replaceAll("[(),]", "");
@@ -36,12 +29,13 @@ void setup() {
       coordinates.add(number);
     }
   }
-  room = new Room(coordinates);
+  room = new Room(roomCanvas, coordinates);
   roomCanvas.addItem(room);
 }
 
 void draw() {
   stroke(0);
+  strokeWeight(4);
   //roomCanvas.drawBorder();
   roomCanvas.draw();
 }

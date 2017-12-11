@@ -1,4 +1,4 @@
 public interface Drawable {
-  public void draw(Canvas parent);
+  public void draw();
   public void setUnitSize(float size);
 }

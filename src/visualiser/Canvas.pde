@@ -15,7 +15,7 @@ public class Canvas {
   }
   
   public void drawBorder() {
-    drawBorder(5, 0);
+    drawBorder(3, 0);
   }
   
   public void drawBorder(int thickness, color colour) {
@@ -29,12 +29,11 @@ public class Canvas {
   
   public void addItem(Drawable item) {
     objects.add(item);
-    item.setUnitSize(30);
   }
   
   public void draw() {
     for (Drawable object : objects) {
-      object.draw(this);
+      object.draw();
     }
   }
   
