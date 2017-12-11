@@ -1,4 +1,5 @@
 public interface Drawable {
   public void draw();
-  public void setUnitSize(float size);
+  public void show();
+  public void hide();
 }

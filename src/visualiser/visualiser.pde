@@ -11,31 +11,32 @@ void settings() {
 }
 
 Room room;
-Canvas roomCanvas;
 
 void setup() {
-  background(255);
+  background(#77939b);
+  textSize(70);
+  textAlign(CENTER);
+  text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 8);
   smooth();
   noStroke();
   
-  roomCanvas = new Canvas(3*PPU, 3*PPU, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+  //roomCanvas = new Canvas(3*PPU, 3*PPU, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
   
   ArrayList<Float> coordinates = new ArrayList<Float>();
   String[] lines = loadStrings("output.txt");
   for (String line : lines) {
     String filteredLine = line.replaceAll("[(),]", "");
     for (String arg : filteredLine.split(" ")) { //<>//
-      float number = Float.parseFloat(arg);
-      coordinates.add(number);
+      coordinates.add(Float.parseFloat(arg));
     }
   }
-  room = new Room(roomCanvas, coordinates);
-  roomCanvas.addItem(room);
+  room = new Room(coordinates);
+  //roomCanvas.addItem(room);
 }
 
 void draw() {
   stroke(0);
   strokeWeight(4);
   //roomCanvas.drawBorder();
-  roomCanvas.draw();
+  room.draw();
 }
