@@ -1,0 +1,71 @@
+import java.util.List;
+
+public static final int WINDOW_WIDTH = 1000;
+public static final int WINDOW_HEIGHT = 1000;
+
+public class Coord {
+  public final float x;
+  public final float y;
+  public Coord(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+public class Room {
+  private ArrayList<Coord> vertices;
+  
+  // Unit size in pixels
+  private int unit = 50;
+  
+  public Room(ArrayList<Float> coordinates) {
+    vertices = new ArrayList<Coord>();
+    for (int i = 1; i < coordinates.size(); i++) {
+      vertices.add(new Coord(coordinates.get(i - 1), coordinates.get(i)));
+    }
+  }
+  
+  public void setUnitSize(float size) {
+    unit = (int) size;
+  }
+  
+  public void draw() {
+    stroke(0);
+    for (int i = 1; i < vertices.size(); i++) {
+      line(vertices.get(i-1).x * unit, vertices.get(i-1).y * unit,
+          vertices.get(i).x * unit, vertices.get(i).y * unit);
+    }
+  }
+  
+}
+
+void settings() {
+  size(WINDOW_WIDTH, WINDOW_HEIGHT);
+}
+
+Room room;
+void setup() {
+  background(255);
+  smooth();
+  noStroke();
+  
+  ArrayList<Float> coordinates = new ArrayList<Float>();
+  float max_coord = 0, min_coord = 0;
+  String[] lines = loadStrings("output.txt");
+  for (String line : lines) {
+    String filteredLine = line.replaceAll("[(),]", "");
+    for (String arg : filteredLine.split(" ")) {
+      float number = Float.parseFloat(arg);
+      max_coord = (number > max_coord) ? number : max_coord;
+      min_coord = (number < min_coord) ? number : min_coord;
+      coordinates.add(number);
+    }
+  }
+  room = new Room(coordinates); //<>//
+  ///room.setUnitSize(WINDOW_WIDTH / (max_coord - min_coord));
+}
+
+void draw() {
+  stroke(0);
+  room.draw();
+}
