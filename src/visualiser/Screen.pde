@@ -2,15 +2,16 @@ import java.util.List;
 
 public class Screen {
   
-  private ArrayList<Drawable> objects = new ArrayList<Drawable>();
+  private ArrayList<Furniture> furniture = new ArrayList<Furniture>();
+  private Room room;
   
-  public void addItem(Drawable item) {
-    objects.add(item);
+  public void addRoom(Room room) {
+    this.room = room;
+  }  
+  
+  public void addFurniture(Furniture f) {
+    furniture.add(f);
   }
   
-  public void draw() {
-    for (Drawable object : objects) {
-      object.draw();
-    }
-  }
+  
 }

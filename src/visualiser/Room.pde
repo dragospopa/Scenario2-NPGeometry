@@ -1,23 +1,11 @@
 public class Room implements Drawable {
   private PShape roomShape;
   private ArrayList<PShape> items = new ArrayList<PShape>();
-  
   private float m_scale = 100.0f;
   
   public Room(ArrayList<Float> roomVertices) {
     roomShape = createPolygon(roomVertices);
-  }
-  
-  private PShape createPolygon(ArrayList<Float> coordinates) {
-    PShape new_shape = createShape();
-    new_shape.beginShape();
-    new_shape.stroke(0);
-    new_shape.strokeWeight(0.15);
-    for (int i = 1; i < coordinates.size(); i += 2) {
-      new_shape.vertex(coordinates.get(i - 1), coordinates.get(i));
-    }     
-    new_shape.endShape(CLOSE);
-    return new_shape; 
+    println("roomshape is " + roomShape.width + "x" + roomShape.height);
   }
   
   public void addObject(ArrayList<Float> vertices) {
@@ -42,6 +30,14 @@ public class Room implements Drawable {
     shapeMode(CENTER);
     shape(roomShape, 8, 6);
     scale(1 / m_scale);
+  }
+  
+  public int getWidth() {
+    return round(roomShape.width);
+  }
+  
+  public int getHeight() {
+    return round(roomShape.height);
   }
   
 }

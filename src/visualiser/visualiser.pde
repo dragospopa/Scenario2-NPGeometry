@@ -24,24 +24,48 @@ void setup() {
   
   //roomCanvas = new Canvas(3*PPU, 3*PPU, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
   
-  ArrayList<Float> coordinates = new ArrayList<Float>();
-  String[] lines = loadStrings("output.txt");
+  
+  String[] lines = loadStrings("input.txt");
   for (String line : lines) {
-    String filteredLine = line.replaceAll("[(),]", "");
-    for (String arg : filteredLine.split(" ")) { //<>//
-      coordinates.add(Float.parseFloat(arg));
+    
+    Screen screen = new Screen();
+    
+    String filtered = line.replaceAll("[(),]", "");
+    String[] temp = filtered.split("#");
+    String roomCoords = temp[0];
+    
+    int start_index = roomCoords.indexOf(":") + 2;
+    roomCoords = roomCoords.substring(start_index);
+    
+    ArrayList<Float> roomVertices = new ArrayList<Float>();
+    for (String arg : roomCoords.split(" ")) {
+      roomVertices.add(Float.parseFloat(arg));
     }
+    screen.addRoom(new Room(roomVertices));
+    
+    String itemCoords = temp[1];
+    
+    int colon_index = itemCoords.indexOf(":");
+    int cost = Integer.parseInt(itemCoords.substring(0, colon_index));
+    itemCoords = itemCoords.substring(colon_index + 1);
+    for (String arg: itemCoords.split(";")) {
+      ArrayList<Float> objectVertices = new ArrayList<Float>();
+      for (String arg2: arg.split(" ")) {
+        objectVertices.add(Float.parseFloat(arg2));
+      }
+      screen.addFurniture(new Furniture(objectVertices, cost));
+    } //<>//
   }
   
-  room = new Room(coordinates);
-  buttonMenu = new MenuBar(WINDOW_WIDTH / 12, round(WINDOW_HEIGHT * 0.85));
-  buttonMenu.addMenuItem(new Button(1));
+  //room = new Room(coordinates);
+  //buttonMenu = new MenuBar(WINDOW_WIDTH / 12, round(WINDOW_HEIGHT * 0.85));
+  //buttonMenu.addMenuItem(new Button(1));
+  //buttonMenu.addMenuItem(new Button(2));
 }
 
 void draw() {
   stroke(0);
   strokeWeight(3);
-  //roomCanvas.drawBorder();
-  room.draw();
-  buttonMenu.draw();
+  //room.draw();
+  //buttonMenu.draw();
 }

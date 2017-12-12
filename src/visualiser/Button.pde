@@ -21,9 +21,7 @@ public class Button implements Drawable {
   }
   
   public void draw() {
-    
     checkForMouseTouch();
-    
     if (mouse_touching) {
       current_colour = HIGHLIGHT_COLOUR;
     } else {
@@ -63,5 +61,13 @@ public class Button implements Drawable {
     rect.translate(x, y);
     pos_x += x;
     pos_y += y;
+  }
+  
+  public int getWidth() {
+    return round(width);
+  }
+  
+  public int getHeight() {
+    return round(height);
   }
 }
