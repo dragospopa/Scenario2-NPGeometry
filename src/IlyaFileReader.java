@@ -1,6 +1,3 @@
-import org.locationtech.jts.geom.Polygon;
-
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,10 +10,9 @@ import java.util.regex.Pattern;
  */
 public class IlyaFileReader {
 
-    public static ArrayList<Polygon> rooms;
+    public static ArrayList<Room> rooms;
 
-
-    public static ArrayList<ArrayList<Polygon>> decorations;
+    public static ArrayList<ArrayList<Furniture>> decorations;
 
     public IlyaFileReader() {
         decorations = new ArrayList<>();
@@ -57,12 +53,11 @@ public class IlyaFileReader {
                     IlyaCoordinate roomCoord = new IlyaCoordinate(x_coord, y_coord);
                     ilyaCoordinates.add(roomCoord);
                 }
-                Room tempRoom = new Room(ilyaCoordinates);
-                Polygon room = tempRoom.getPolygon();
+                Room room = new Room(ilyaCoordinates);
 
                 // parse furnitures
                 String[] furnitures = aux[1].split(";");
-                ArrayList<Polygon> decoration = new ArrayList<>();
+                ArrayList<Furniture> decoration = new ArrayList<>();
 
                 // get each furniture string
                 for (String strFurniture : furnitures) {
@@ -90,8 +85,8 @@ public class IlyaFileReader {
                         IlyaCoordinate singleFurnitureCoord = new IlyaCoordinate(x_coord, y_coord);
                         furnitureIlyaCoordinates.add(singleFurnitureCoord);
                     }
-                    Furniture tempFurniture = new Furniture(Integer.parseInt(unitCostStr), furnitureIlyaCoordinates);
-                    decoration.add(tempFurniture.getPolygon());
+                    Furniture furniture = new Furniture(Integer.parseInt(unitCostStr), furnitureIlyaCoordinates);
+                    decoration.add(furniture);
                 }
                 rooms.add(room);
                 decorations.add(decoration);
