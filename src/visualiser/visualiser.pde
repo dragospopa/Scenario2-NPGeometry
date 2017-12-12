@@ -11,9 +11,8 @@ void settings() {
 }
 
 ScreenManager screenManager;
-Room room;
-Button button;
 MenuBar buttonMenu;
+ScaleSlider roomSlider;
 
 void setup() {
   smooth();
@@ -21,7 +20,7 @@ void setup() {
   
   screenManager = new ScreenManager();
   buttonMenu = new MenuBar(WINDOW_WIDTH / 14, round(WINDOW_HEIGHT * 0.85));
-  //roomCanvas = new Canvas(3*PPU, 3*PPU, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+  roomSlider = new ScaleSlider(WINDOW_WIDTH * 0.9, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 30, WINDOW_HEIGHT / 2);
   
   int num_rooms = 1;
   String[] lines = loadStrings("input.txt");
@@ -49,12 +48,12 @@ void setup() {
       int cost = Integer.parseInt(arg.substring(0, colon_index));
       String contents = arg.substring(colon_index + 1);
       ArrayList<Float> objectVertices = new ArrayList<Float>(); //<>//
-      for (String arg2: contents.split(" ")) {
+      for (String arg2: contents.split(" ")) { //<>//
         objectVertices.add(Float.parseFloat(arg2));
       }
       screen.addFurniture(new Furniture(objectVertices, cost));
-    } //<>//
-    screenManager.addScreen(screen);
+    }
+    screenManager.addScreen(screen); //<>//
     buttonMenu.addMenuItem(new Button(num_rooms++));
   }
   screenManager.switchToScreen(1);
@@ -64,9 +63,11 @@ void draw() {
   background(#77939b);
   textSize(65);
   textAlign(CENTER);
-  text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 12);
+  fill(255);
+  text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 20);
   stroke(0);
   strokeWeight(3);
   buttonMenu.draw();
+  roomSlider.draw();
   screenManager.drawActiveScreen();
 }
