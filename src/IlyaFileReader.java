@@ -1,3 +1,6 @@
+import org.locationtech.jts.geom.Polygon;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,12 +13,13 @@ import java.util.regex.Pattern;
  */
 public class IlyaFileReader {
 
-    public static ArrayList<Room> rooms;
+    public static ArrayList<Polygon> rooms;
 
-    public static ArrayList<ArrayList<Furniture>> decorationss;
+
+    public static ArrayList<ArrayList<Polygon>> decorations;
 
     public IlyaFileReader() {
-        decorationss = new ArrayList<>();
+        decorations = new ArrayList<>();
         rooms = new ArrayList<>();
     }
 
@@ -53,11 +57,12 @@ public class IlyaFileReader {
                     IlyaCoordinate roomCoord = new IlyaCoordinate(x_coord, y_coord);
                     ilyaCoordinates.add(roomCoord);
                 }
-                Room room = new Room(ilyaCoordinates);
+                Room tempRoom = new Room(ilyaCoordinates);
+                Polygon room = tempRoom.getPolygon();
 
                 // parse furnitures
                 String[] furnitures = aux[1].split(";");
-                ArrayList<Furniture> decoration = new ArrayList<>();
+                ArrayList<Polygon> decoration = new ArrayList<>();
 
                 // get each furniture string
                 for (String strFurniture : furnitures) {
@@ -85,11 +90,11 @@ public class IlyaFileReader {
                         IlyaCoordinate singleFurnitureCoord = new IlyaCoordinate(x_coord, y_coord);
                         furnitureIlyaCoordinates.add(singleFurnitureCoord);
                     }
-                    Furniture furniture = new Furniture(Integer.parseInt(unitCostStr), furnitureIlyaCoordinates);
-                    decoration.add(furniture);
+                    Furniture tempFurniture = new Furniture(Integer.parseInt(unitCostStr), furnitureIlyaCoordinates);
+                    decoration.add(tempFurniture.getPolygon());
                 }
                 rooms.add(room);
-                decorationss.add(decoration);
+                decorations.add(decoration);
             }
 
             bufferedReader.close();
@@ -100,6 +105,6 @@ public class IlyaFileReader {
             System.out.println("Error reading file '" + fileName + "'");
             System.exit(0);
         }
-        System.out.println("File Read. Number of rooms: " +rooms.size() + "; Number of decoration sets: " + decorationss.size());
+        System.out.println("File Read. Number of rooms: " +rooms.size() + "; Number of decoration sets: " + decorations.size());
     }
 }
