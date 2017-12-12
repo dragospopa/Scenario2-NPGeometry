@@ -34,9 +34,9 @@ public class IlyaFileReader {
                 // we don't really need those first 3 characters ever
                 aux[0] = aux[0].substring(3).trim();
 
-                // get each pair of coordinates
+                // get each pair of ilyaCoordinates
                 String[] roomCoords = aux[0].split(Pattern.quote(")"));
-                ArrayList<Coordinate> coordinates = new ArrayList<>();
+                ArrayList<IlyaCoordinate> ilyaCoordinates = new ArrayList<>();
                 for (String coordsPair : roomCoords) {
 
                     // hacking the pattern
@@ -50,10 +50,10 @@ public class IlyaFileReader {
                     Double y_coord = Double.parseDouble(coords[1].trim());
 
                     // start building stuff up
-                    Coordinate roomCoord = new Coordinate(x_coord, y_coord);
-                    coordinates.add(roomCoord);
+                    IlyaCoordinate roomCoord = new IlyaCoordinate(x_coord, y_coord);
+                    ilyaCoordinates.add(roomCoord);
                 }
-                Room room = new Room(coordinates);
+                Room room = new Room(ilyaCoordinates);
 
                 // parse furnitures
                 String[] furnitures = aux[1].split(";");
@@ -65,9 +65,9 @@ public class IlyaFileReader {
                     String[] furnitureParts = strFurniture.split(":");
                     String unitCostStr = furnitureParts[0].trim();
 
-                    // separate each pair of coordinates
+                    // separate each pair of ilyaCoordinates
                     String[] furnitureStrCoords = furnitureParts[1].split(Pattern.quote(")"));
-                    ArrayList<Coordinate> furnitureCoordinates = new ArrayList<Coordinate>();
+                    ArrayList<IlyaCoordinate> furnitureIlyaCoordinates = new ArrayList<IlyaCoordinate>();
                     for (String coordsPair : furnitureStrCoords) {
 
                         // hacking the pattern
@@ -82,10 +82,10 @@ public class IlyaFileReader {
                         Double y_coord = Double.parseDouble(coords[1].trim());
 
                         // start building stuff up
-                        Coordinate singleFurnitureCoord = new Coordinate(x_coord, y_coord);
-                        furnitureCoordinates.add(singleFurnitureCoord);
+                        IlyaCoordinate singleFurnitureCoord = new IlyaCoordinate(x_coord, y_coord);
+                        furnitureIlyaCoordinates.add(singleFurnitureCoord);
                     }
-                    Furniture furniture = new Furniture(Integer.parseInt(unitCostStr), furnitureCoordinates);
+                    Furniture furniture = new Furniture(Integer.parseInt(unitCostStr), furnitureIlyaCoordinates);
                     decoration.add(furniture);
                 }
                 rooms.add(room);
