@@ -11,7 +11,7 @@ public class ScreenManager {
   
   public void setRoomScale(float s) {
     for (Screen screen : screens) {
-      screen.setRoomScale(s);
+      screen.setScale(s);
     }
   }
   

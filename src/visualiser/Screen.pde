@@ -27,15 +27,18 @@ public class Screen {
     }
   }
   
-  public void setRoomScale(float s) {
+  public void setScale(float s) {
     room.setScale(s);
+    for (Furniture item : furniture) {
+      item.setScale(s);
+    }
   }
   
   public void draw() {
+    for (Furniture item : furniture) {
+      item.draw();
+    }
     room.draw();
-    //for (Furniture item : furniture) {
-    //  item.draw();
-    //}
   }
   
 }
