@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class IlyaCoordinate {
     private double X;
     private double Y;
@@ -7,6 +9,12 @@ public class IlyaCoordinate {
         this.Y=y;
     }
 
+    public IlyaCoordinate(double minX, double maxX, double minY, double maxY){
+        Random r = new Random();
+        X = minX + (maxX - minX) * r.nextDouble();
+        Y = minY + (maxY - minY) * r.nextDouble();
+    }
+
     public double getX() {
         return X;
     }
@@ -14,4 +22,6 @@ public class IlyaCoordinate {
     public double getY() {
         return Y;
     }
+
+
 }
