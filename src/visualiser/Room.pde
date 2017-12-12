@@ -1,10 +1,17 @@
 public class Room implements Drawable {
   private PShape roomShape;
   private float m_scale = 100.0f;
+  private float x_pos, y_pos;
   
   public Room(ArrayList<Float> roomVertices) {
     roomShape = createPolygon(roomVertices);
-    println("roomshape is " + roomShape.width + "x" + roomShape.height);
+    x_pos = WINDOW_WIDTH / 2 / m_scale;
+    y_pos = WINDOW_HEIGHT / 2 / m_scale;
+    //println("roomshape is " + roomShape.width + "x" + roomShape.height);
+  }
+  
+  public void setScale(float s) {
+    m_scale = s;
   }
   
   public void move(int x, int y) {
@@ -21,10 +28,18 @@ public class Room implements Drawable {
   
   public void draw() {
     stroke(0);
+    //translate(x_pos, y_pos);
     scale(m_scale);
+    //translate(-x_pos, -y_pos);
+    setCenterPos();
     shapeMode(CENTER);
-    shape(roomShape, 8, 6);
+    shape(roomShape, x_pos, y_pos);
     scale(1 / m_scale);
+  }
+  
+  private void setCenterPos() {
+      x_pos = (WINDOW_WIDTH / 2 / m_scale) - (roomShape.width / 2 / m_scale);
+      y_pos = (WINDOW_HEIGHT / 2 / m_scale) + (roomShape.height / 2 / m_scale);
   }
   
   public int getWidth() {

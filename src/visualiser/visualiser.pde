@@ -68,6 +68,6 @@ void draw() {
   stroke(0);
   strokeWeight(3);
   buttonMenu.draw();
-  roomSlider.draw();
   screenManager.drawActiveScreen();
+  roomSlider.draw();
 }

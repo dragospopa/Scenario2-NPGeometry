@@ -1,11 +1,12 @@
 public class ScaleSlider {
   
+  private final float MIN_SCALE_AMOUNT = 10;
+  private final float MAX_SCALE_AMOUNT = 500;
+  
   private final float bar_x, bar_y, width, height;
   private final float slider_min_pos, slider_max_pos;
-  private int roomScale;
   private float slider_x, slider_y, slider_width, slider_height;
   private boolean mouse_pressed_slider = false;
-  private boolean mouse_released = true;
   
   public ScaleSlider(float x, float y, float width, float height) {
     bar_x = x;
@@ -31,6 +32,7 @@ public class ScaleSlider {
     rect(bar_x, bar_y, width, height);
     fill(#429bf4);
     rect(slider_x, slider_y, slider_width, slider_height);
+    screenManager.setRoomScale((slider_max_pos - slider_y) * ((MAX_SCALE_AMOUNT - MIN_SCALE_AMOUNT) / height));
   }
   
   private void checkMouse() {
@@ -38,10 +40,8 @@ public class ScaleSlider {
       if (mouseX >= slider_x - (slider_width / 2) && mouseX <= slider_x + (slider_width / 2) &&
           mouseY >= slider_y - (slider_height / 2) && mouseY <= slider_y + (slider_height / 2)) {
           mouse_pressed_slider = true;
-          mouse_released = false;
       }
     } else {
-      mouse_released = true;
       mouse_pressed_slider = false;
     }
   }

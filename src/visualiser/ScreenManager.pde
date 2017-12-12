@@ -9,6 +9,12 @@ public class ScreenManager {
     screens.add(screen);
   }
   
+  public void setRoomScale(float s) {
+    for (Screen screen : screens) {
+      screen.setRoomScale(s);
+    }
+  }
+  
   public void switchToScreen(int i) {
     for (Screen screen : screens) {
       screen.hide();
@@ -18,7 +24,7 @@ public class ScreenManager {
   }
   
   public void drawActiveScreen() {
-    println("Drawing screen " + active_screen + "...");
+    //println("Drawing screen " + active_screen + "...");
     screens.get(active_screen).draw();
   }
   

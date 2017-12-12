@@ -10,7 +10,7 @@ public class Screen {
   }  
   
   public void addFurniture(Furniture f) {
-    //furniture.add(f);
+    furniture.add(f);
   }
   
   public void hide() {
@@ -25,6 +25,10 @@ public class Screen {
     for (Furniture item : furniture) {
       item.show();
     }
+  }
+  
+  public void setRoomScale(float s) {
+    room.setScale(s);
   }
   
   public void draw() {
