@@ -21,14 +21,13 @@ public class CaseSolver {
 
     public void solve(){
         for (Furniture f: decorations) {
-            f.convexHull(); //make sure this edits the instance data of the shape
             //f.gravityRotate();
         }
         sortDecorations();
         for (Furniture f: decorations) {
             double minimalCentre=Double.MAX_VALUE;
             double currentMinCentre;
-            IlyaCoordinate currentDropPoint, bestDropPoint = null;
+            IlyaCoordinate currentDropPoint = null, bestDropPoint = null;
 
             for (int i = 0; i < 10; i++) {
                 //currentDropPoint = generateRandomValidDropPoint();
@@ -37,12 +36,10 @@ public class CaseSolver {
                     minimalCentre = currentMinCentre;
                     bestDropPoint = currentDropPoint;
                 }
-
             }
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
-
     }
 
     private void sortDecorations(){
@@ -55,13 +52,13 @@ public class CaseSolver {
         do {
             coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
             f.translateToStartFrom(coordinate);
-        } while (!doesElementFit(f.getTempPolygon()));
+        } while (!doesElementFit(f.getPolygon(f.tempVertices)));
 
         return coordinate;
     }
 
     private boolean doesElementFit(Polygon p){
-        if (!room.getPolygon().covers(p))
+        if (!room.getPolygon(room.vertices).covers(p))
             return false;
         for (Furniture addedF: placedItems) {
             if(p.intersects(addedF.getPolygon()))

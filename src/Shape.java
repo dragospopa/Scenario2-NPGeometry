@@ -6,7 +6,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by tomaszczernuszenko on 11/12/2017.
@@ -22,9 +21,9 @@ public abstract class Shape implements Comparable{
     // for furniture
     public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
         this(vertices);
+        tempVertices = this.vertices;
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
-        tempVertices = new ArrayList<>();
     }
 
     // for the roomz
@@ -33,37 +32,33 @@ public abstract class Shape implements Comparable{
         setExtrema();
     }
 
-    public ArrayList<IlyaCoordinate> rotate(double degrees){
-        return vertices;
+    public IlyaCoordinate centreOfMass(){
+        double sum_x = 0, sum_y = 0;
+        for (IlyaCoordinate coords : this.vertices){
+            sum_x += coords.getX();
+            sum_y += coords.getY();
+        }
+        return new IlyaCoordinate(sum_x/this.vertices.size(),sum_y/this.vertices.size());
     }
 
-    public ArrayList<IlyaCoordinate> convexHull(){
-        return vertices;
-    }
-
-    public ArrayList<IlyaCoordinate> rectangleOver(){
-        return vertices;
+    public void rotate(double degrees){
+        tempVertices = new ArrayList<>();
+        for (IlyaCoordinate coords : this.vertices){
+            tempVertices.add(new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees)));
+        }
     }
 
     public double area(){
-        List <Double> x_coord = new ArrayList<Double>();
-        List <Double> y_coord = new ArrayList<Double>();
-        for (int i=0;i<this.vertices.size();i++){
-            x_coord.add(this.vertices.get(i).getX());
-            y_coord.add(this.vertices.get(i).getY());
-        }
-
-        // ffs we dont really need to pass the size, this aint C anymore
-        return AreaCalculator.calculateArea(x_coord, y_coord, this.vertices.size());
+        return getPolygon(this.vertices).convexHull().getArea();
     }
 
-    public Polygon getPolygon(){
-        Coordinate coordinates[] = new Coordinate[vertices.size()+1];
-        for(int i=0; i<vertices.size(); i++){
-            Coordinate coordinate = new Coordinate(vertices.get(i).getX(), vertices.get(i).getY());
+    public Polygon getPolygon(ArrayList<IlyaCoordinate> v){
+        Coordinate coordinates[] = new Coordinate[v.size()+1];
+        for(int i=0; i<v.size(); i++){
+            Coordinate coordinate = new Coordinate(v.get(i).getX(), v.get(i).getY());
             coordinates[i] = coordinate;
         }
-        coordinates[coordinates.length-1] = new Coordinate(vertices.get(0).getX(), vertices.get(0).getY());
+        coordinates[coordinates.length-1] = new Coordinate(v.get(0).getX(), v.get(0).getY());
         CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
         return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
     }
@@ -92,17 +87,6 @@ public abstract class Shape implements Comparable{
 
     public ArrayList<IlyaCoordinate> getTempVertices() {
         return tempVertices;
-    }
-
-    public Polygon getTempPolygon(){
-        Coordinate coordinates[] = new Coordinate[tempVertices.size()+1];
-        for(int i=0; i<tempVertices.size(); i++){
-            Coordinate coordinate = new Coordinate(tempVertices.get(i).getX(), tempVertices.get(i).getY());
-            coordinates[i] = coordinate;
-        }
-        coordinates[coordinates.length-1] = new Coordinate(tempVertices.get(0).getX(), tempVertices.get(0).getY());
-        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-        return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
     }
 
     public void setExtrema(){
