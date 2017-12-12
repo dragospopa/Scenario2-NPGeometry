@@ -1,9 +1,6 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import org.locationtech.jts.geom.Polygon;
+
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,14 +9,17 @@ public class Main {
         ilyaFileReader.readFile();
 
         // stuff that was already here
-        ArrayList<Coordinate> coordinates = new ArrayList<>();
-        coordinates.add(new Coordinate(0, 0));
-        coordinates.add(new Coordinate(4, 0));
-        coordinates.add(new Coordinate(4, 4));
-        coordinates.add(new Coordinate(0, 4));
+        ArrayList<IlyaCoordinate> ilyaCoordinates = new ArrayList<>();
+        ilyaCoordinates.add(new IlyaCoordinate(0, 0));
+        ilyaCoordinates.add(new IlyaCoordinate(4, 0));
+        ilyaCoordinates.add(new IlyaCoordinate(4, 4));
+        ilyaCoordinates.add(new IlyaCoordinate(0, 4));
         AreaCalculator calculator = new AreaCalculator();
-        InputHandler inputHandler = new InputHandler(coordinates);
-        double area = calculator.calculateArea(inputHandler.getXCoordinates(coordinates), inputHandler.getYCoordinates(coordinates), inputHandler.getNumberOfPoints());
+        InputHandler inputHandler = new InputHandler(ilyaCoordinates);
+        double area = calculator.calculateArea(inputHandler.getXCoordinates(ilyaCoordinates), inputHandler.getYCoordinates(ilyaCoordinates), inputHandler.getNumberOfPoints());
         System.out.println(area);
+
+        Polygon p = IlyaFileReader.decorationss.get(0).get(0).getPolygon();
+        System.out.println(p);
     }
 }
