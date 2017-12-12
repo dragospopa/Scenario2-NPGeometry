@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,29 +6,29 @@ public class InputHandler {
     private List<Double> yCoordinates= new ArrayList<>();
     private int numberOfPoints = 0;
 
-    public InputHandler(List<Coordinate> coordinates) {
-        this.xCoordinates = getXCoordinates(coordinates);
-        this.yCoordinates = getYCoordinates(coordinates);
-        this.numberOfPoints = coordinates.size();
+    public InputHandler(List<IlyaCoordinate> ilyaCoordinates) {
+        this.xCoordinates = getXCoordinates(ilyaCoordinates);
+        this.yCoordinates = getYCoordinates(ilyaCoordinates);
+        this.numberOfPoints = ilyaCoordinates.size();
     }
 
-    private void getCoordinateLists(List<Coordinate> coordinates) {
-            for (Coordinate coordinate: coordinates) {
-                xCoordinates.add(coordinate.getX());
-                yCoordinates.add(coordinate.getY());
+    private void getCoordinateLists(List<IlyaCoordinate> ilyaCoordinates) {
+            for (IlyaCoordinate ilyaCoordinate : ilyaCoordinates) {
+                xCoordinates.add(ilyaCoordinate.getX());
+                yCoordinates.add(ilyaCoordinate.getY());
         }
     }
 
-    public List<Double> getXCoordinates(List<Coordinate> coordinates) {
+    public List<Double> getXCoordinates(List<IlyaCoordinate> ilyaCoordinates) {
         if (xCoordinates.isEmpty()) {
-            getCoordinateLists(coordinates);
+            getCoordinateLists(ilyaCoordinates);
         }
         return xCoordinates;
     }
 
-    public List<Double> getYCoordinates(List<Coordinate> coordinates) {
+    public List<Double> getYCoordinates(List<IlyaCoordinate> ilyaCoordinates) {
         if (yCoordinates.isEmpty()) {
-            getCoordinateLists(coordinates);
+            getCoordinateLists(ilyaCoordinates);
         }
         return yCoordinates;
     }
