@@ -2,7 +2,7 @@ import java.util.List;
 
 public class AreaCalculator {
 
-    double calculateArea(List<Double> xCoordinates, List<Double> yCoordinates, Integer numberOfPoints) {
+    public static double calculateArea(List<Double> xCoordinates, List<Double> yCoordinates, Integer numberOfPoints) {
         double area = 0;
         int j = numberOfPoints - 1;
 
