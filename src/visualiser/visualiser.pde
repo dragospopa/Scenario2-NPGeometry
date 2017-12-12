@@ -11,12 +11,14 @@ void settings() {
 }
 
 Room room;
+Button button;
+MenuBar buttonMenu;
 
 void setup() {
   background(#77939b);
-  textSize(70);
+  textSize(65);
   textAlign(CENTER);
-  text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 8);
+  text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 12);
   smooth();
   noStroke();
   
@@ -30,13 +32,16 @@ void setup() {
       coordinates.add(Float.parseFloat(arg));
     }
   }
+  
   room = new Room(coordinates);
-  //roomCanvas.addItem(room);
+  buttonMenu = new MenuBar(WINDOW_WIDTH / 12, round(WINDOW_HEIGHT * 0.85));
+  buttonMenu.addMenuItem(new Button(1));
 }
 
 void draw() {
   stroke(0);
-  strokeWeight(4);
+  strokeWeight(3);
   //roomCanvas.drawBorder();
   room.draw();
+  buttonMenu.draw();
 }
