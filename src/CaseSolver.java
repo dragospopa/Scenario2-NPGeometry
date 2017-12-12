@@ -50,11 +50,14 @@ public class CaseSolver {
     }
 
     private IlyaCoordinate generateRandomValidDropPoint(Furniture f){
-        for(int i=0; i<10; i++){
-            //while(doesElementFit(f.translateToStartFrom(new IlyaCoordinate())))
-        }
-        //This will require a tone of work
-        return null;
+        IlyaCoordinate coordinate = null;
+        //we might want to generate a few different valid points and see which of them work best
+        do {
+            coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
+            f.translateToStartFrom(coordinate);
+        } while (!doesElementFit(f.getTempPolygon()));
+
+        return coordinate;
     }
 
     private boolean doesElementFit(Polygon p){

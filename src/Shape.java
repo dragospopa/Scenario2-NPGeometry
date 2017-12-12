@@ -21,7 +21,7 @@ public abstract class Shape implements Comparable{
 
     // for furniture
     public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
-        this.vertices = vertices;
+        this(vertices);
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
         tempVertices = new ArrayList<>();
@@ -30,6 +30,7 @@ public abstract class Shape implements Comparable{
     // for the roomz
     public Shape(ArrayList<IlyaCoordinate> vertices) {
         this.vertices = vertices;
+        setExtrema();
     }
 
     public ArrayList<IlyaCoordinate> rotate(double degrees){
@@ -116,7 +117,24 @@ public abstract class Shape implements Comparable{
                 maxX = c.getX();
             if(c.getY()<minY)
                 minY = c.getY();
+            if(c.getY()>maxY)
+                maxY = c.getY();
         }
+    }
 
+    public double getMinX() {
+        return minX;
+    }
+
+    public double getMaxX() {
+        return maxX;
+    }
+
+    public double getMinY() {
+        return minY;
+    }
+
+    public double getMaxY() {
+        return maxY;
     }
 }
