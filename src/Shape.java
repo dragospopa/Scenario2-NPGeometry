@@ -1,8 +1,4 @@
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateSequence;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.ArrayList;
@@ -32,8 +28,8 @@ public abstract class Shape {
         return vertices;
     }
 
-    public ArrayList<IlyaCoordinate> convexHull(){
-        return vertices;
+    public Geometry convexHull(){
+        return getPolygon().convexHull();
     }
 
     public ArrayList<IlyaCoordinate> rectangleOver(){
