@@ -10,12 +10,13 @@ import java.util.regex.Pattern;
  */
 public class IlyaFileReader {
 
-    public static Room room;
+    public static ArrayList<Room> rooms;
 
-    public static ArrayList<Furniture> decoration;
+    public static ArrayList<ArrayList<Furniture>> decorationss;
 
     public IlyaFileReader() {
-        decoration = new ArrayList<>();
+        decorationss = new ArrayList<>();
+        rooms = new ArrayList<>();
     }
 
     public void readFile(){
@@ -52,11 +53,11 @@ public class IlyaFileReader {
                     Coordinate roomCoord = new Coordinate(x_coord, y_coord);
                     coordinates.add(roomCoord);
                 }
-                room = new Room(coordinates);
+                Room room = new Room(coordinates);
 
                 // parse furnitures
                 String[] furnitures = aux[1].split(";");
-                decoration = new ArrayList<>();
+                ArrayList<Furniture> decoration = new ArrayList<>();
 
                 // get each furniture string
                 for (String strFurniture : furnitures) {
@@ -87,6 +88,8 @@ public class IlyaFileReader {
                     Furniture furniture = new Furniture(Integer.parseInt(unitCostStr), furnitureCoordinates);
                     decoration.add(furniture);
                 }
+                rooms.add(room);
+                decorationss.add(decoration);
             }
 
             bufferedReader.close();
@@ -97,6 +100,6 @@ public class IlyaFileReader {
             System.out.println("Error reading file '" + fileName + "'");
             System.exit(0);
         }
-        System.out.println("File Read.");
+        System.out.println("File Read. Number of rooms: " +rooms.size() + "; Number of decoration sets: " + decorationss.size());
     }
 }
