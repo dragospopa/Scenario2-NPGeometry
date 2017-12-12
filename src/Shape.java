@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by tomaszczernuszenko on 11/12/2017.
  */
-public abstract class Shape {
+public abstract class Shape implements Comparable{
     ArrayList<IlyaCoordinate> vertices;
     int unitCost;
     double realCost;
@@ -63,4 +63,18 @@ public abstract class Shape {
         return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
     }
 
+    public double value(){
+        return unitCost/area()/area();
+    }
+
+    //it might be sorting the wrong way
+    @Override
+    public int compareTo(Object o) {
+        if(this.value()>((Shape)o).value()){
+            return 1;
+        } else if (this.value()>((Shape)o).value()) {
+            return -1;
+        }
+        return 0;
+    }
 }
