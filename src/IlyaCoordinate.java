@@ -1,8 +1,8 @@
-public class Coordinate {
+public class IlyaCoordinate {
     private double X;
     private double Y;
 
-    public Coordinate(double x, double y) {
+    public IlyaCoordinate(double x, double y) {
         this.X=x;
         this.Y=y;
     }

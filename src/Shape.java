@@ -1,3 +1,10 @@
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,31 +12,31 @@ import java.util.List;
  * Created by tomaszczernuszenko on 11/12/2017.
  */
 public abstract class Shape {
-    ArrayList<Coordinate> vertices;
+    ArrayList<IlyaCoordinate> vertices;
     int unitCost;
     double realCost;
 
     // for furniture
-    public Shape(int unitCost, ArrayList<Coordinate> vertices) {
+    public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
         this.vertices = vertices;
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
     }
 
     // for the roomz
-    public Shape(ArrayList<Coordinate> vertices) {
+    public Shape(ArrayList<IlyaCoordinate> vertices) {
         this.vertices = vertices;
     }
 
-    public ArrayList<Coordinate> rotate(double degrees){
+    public ArrayList<IlyaCoordinate> rotate(double degrees){
         return vertices;
     }
 
-    public ArrayList<Coordinate> convexHull(){
+    public ArrayList<IlyaCoordinate> convexHull(){
         return vertices;
     }
 
-    public ArrayList<Coordinate> rectangleOver(){
+    public ArrayList<IlyaCoordinate> rectangleOver(){
         return vertices;
     }
 
@@ -43,6 +50,17 @@ public abstract class Shape {
 
         // ffs we dont really need to pass the size, this aint C anymore
         return AreaCalculator.calculateArea(x_coord, y_coord, this.vertices.size());
+    }
+
+    public Polygon getPolygon(){
+        Coordinate coordinates[] = new Coordinate[vertices.size()+1];
+        for(int i=0; i<vertices.size(); i++){
+            Coordinate coordinate = new Coordinate(vertices.get(i).getX(), vertices.get(i).getY());
+            coordinates[i] = coordinate;
+        }
+        coordinates[coordinates.length-1] = new Coordinate(vertices.get(0).getX(), vertices.get(0).getY());
+        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
+        return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
     }
 
 }
