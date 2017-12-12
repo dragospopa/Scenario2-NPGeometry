@@ -1,6 +1,6 @@
 public class Button implements Drawable {
-  private final float width = WINDOW_WIDTH / 12;
-  private final float height = WINDOW_HEIGHT / 12;
+  private final float width = WINDOW_WIDTH / 18;
+  private final float height = WINDOW_HEIGHT / 18;
   private final color NORMAL_COLOUR = 255;
   private final color HIGHLIGHT_COLOUR = #7fa5e2;
   private final color PRESSED_COLOUR = #59cc8f;
@@ -24,13 +24,18 @@ public class Button implements Drawable {
     checkForMouseTouch();
     if (mouse_touching) {
       current_colour = HIGHLIGHT_COLOUR;
+      if (mousePressed) {
+        current_colour = PRESSED_COLOUR;
+        screenManager.switchToScreen(btn_number);
+      }
     } else {
       current_colour = NORMAL_COLOUR;
     }
+    
     rect.setFill(current_colour);
     shape(rect);
     fill(0);
-    textSize(70);
+    textSize(55);
     text(String.valueOf(btn_number), pos_x, pos_y + 20);
   }
   
@@ -44,8 +49,9 @@ public class Button implements Drawable {
   }
   
   void mousePressed() {
+    println("Mouse pressed!");
     if (mouse_touching) {
-      current_colour = PRESSED_COLOUR;
+      
     }
   }
   

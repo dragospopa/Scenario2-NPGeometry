@@ -13,6 +13,18 @@ public class Furniture implements Drawable {
     m_shape.setVisible(false);
   }
   
+  public void move(int x, int y) {
+    m_shape.translate(x, y);
+  }
+  
+  public int getWidth() {
+    return round(m_shape.width);
+  }
+  
+  public int getHeight() {
+    return round(m_shape.height);
+  }
+  
   public void draw() {
     stroke(0);
     shapeMode(CENTER);

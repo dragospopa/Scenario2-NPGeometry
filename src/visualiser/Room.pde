@@ -1,15 +1,10 @@
 public class Room implements Drawable {
   private PShape roomShape;
-  private ArrayList<PShape> items = new ArrayList<PShape>();
   private float m_scale = 100.0f;
   
   public Room(ArrayList<Float> roomVertices) {
     roomShape = createPolygon(roomVertices);
     println("roomshape is " + roomShape.width + "x" + roomShape.height);
-  }
-  
-  public void addObject(ArrayList<Float> vertices) {
-    items.add(createPolygon(vertices));
   }
   
   public void move(int x, int y) {

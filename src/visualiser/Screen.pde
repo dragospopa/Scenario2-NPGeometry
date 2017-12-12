@@ -10,8 +10,28 @@ public class Screen {
   }  
   
   public void addFurniture(Furniture f) {
-    furniture.add(f);
+    //furniture.add(f);
   }
   
+  public void hide() {
+    room.hide();
+    for (Furniture item : furniture) {
+      item.hide();
+    }
+  }
+  
+  public void show() {
+    room.show();
+    for (Furniture item : furniture) {
+      item.show();
+    }
+  }
+  
+  public void draw() {
+    room.draw();
+    //for (Furniture item : furniture) {
+    //  item.draw();
+    //}
+  }
   
 }

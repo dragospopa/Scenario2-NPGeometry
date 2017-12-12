@@ -16,7 +16,7 @@ public class MenuBar implements Drawable {
   }
   
   public void addMenuItem(Drawable item) {
-    if (x_offset >= width) {
+    if (x_offset + pos_x + item.getWidth() >= width) {
       x_offset = 0;
       y_offset += item.getHeight() + SPACE;
     }
