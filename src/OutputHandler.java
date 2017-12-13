@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class OutputHandler {
     BufferedWriter output;
 
-    OutputHandler() {
+    public OutputHandler() {
         try {
             this.output = new BufferedWriter(new FileWriter("output.txt"));
         } catch (Exception e) {
@@ -14,35 +14,36 @@ public class OutputHandler {
         }
     }
 
-    void formatHeader() throws IOException {
+    public void formatHeader() throws IOException {
         output.write("seville\n");
         output.write("p1n1h08ouvfgepn6gupnqdblut\n");
     }
 
-    String generatePointSequence(Shape shape) {
-        ArrayList<IlyaCoordinate> points =shape.vertices;
+    public  String generatePointSequence(Shape shape) {
+        ArrayList<IlyaCoordinate> points = shape.vertices; //need to decide if we print vertices or tempVertices
         StringBuilder pointSequence = new StringBuilder();
         for (IlyaCoordinate coordinate:points) {
             String temp=" (" + coordinate.getX() + ", " + coordinate.getY() +"),";
             pointSequence.append(temp);
         }
-        pointSequence.append(";");
-        return pointSequence.toString();
+        String output = pointSequence.substring(0, pointSequence.length()-1);
+        output += ";";
+        return output;
     }
-
-    String generateLocationList(ArrayList<Shape> shapes) {
+    
+    public String generateLocationList(ArrayList<Furniture> shapes) {
         StringBuilder locationList = new StringBuilder();
         for (Shape shape: shapes) {
             locationList.append(generatePointSequence(shape));
         }
         return locationList.toString();
     }
-
-    String formatForProblem(int problemNumber,ArrayList<Shape> shapes) {
+    
+    public String formatForProblem(int problemNumber,ArrayList<Furniture> shapes) {
         return problemNumber+":"+generateLocationList(shapes);
     }
-
-    String formatForAll(ArrayList<ArrayList<Shape>> shapesList) {
+    
+    public String formatForAll(ArrayList<ArrayList<Furniture>> shapesList) {
         StringBuilder output = new StringBuilder();
         for (int i=0;i<shapesList.size();i++) {
             output.append(formatForProblem(i,shapesList.get(i)));
@@ -50,8 +51,8 @@ public class OutputHandler {
         }
         return output.toString();
     }
-
-    void generateOutputFile(ArrayList<ArrayList<Shape>> shapesList) throws IOException {
+    
+    public void generateOutputFile(ArrayList<ArrayList<Furniture>> shapesList) throws IOException {
         formatHeader();
         this.output.write(formatForAll(shapesList));
     }

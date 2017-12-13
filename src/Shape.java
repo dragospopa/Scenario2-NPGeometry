@@ -29,6 +29,7 @@ public abstract class Shape implements Comparable{
     // for the roomz
     public Shape(ArrayList<IlyaCoordinate> vertices) {
         this.vertices = vertices;
+        this.tempVertices = vertices;
         setExtrema();
     }
 
@@ -140,5 +141,9 @@ public abstract class Shape implements Comparable{
 
     public double getMaxY() {
         return maxY;
+    }
+
+    public void commitTempToMain(){
+        this.vertices = this.tempVertices;
     }
 }

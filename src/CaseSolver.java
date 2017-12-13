@@ -32,7 +32,9 @@ public class CaseSolver {
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
-        System.out.println("Done");
+        System.out.println("Done. Numer of elements: " + placedItems.size());
+        OutputHandler handler = new OutputHandler();
+        System.out.println(handler.formatForProblem(1, placedItems));
     }
 
     private void sortDecorations(){
@@ -68,6 +70,7 @@ public class CaseSolver {
 
     private void applyGravity(Furniture f, IlyaCoordinate dropPoint){
         f.translateToStartFrom(dropPoint);
+        f.commitTempToMain();
         placedItems.add(f);
     }
 
