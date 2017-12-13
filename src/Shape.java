@@ -5,8 +5,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +22,6 @@ public abstract class Shape implements Comparable{
     // for furniture
     public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
         this(vertices);
-        tempVertices = new ArrayList<>(this.vertices);
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
     }
