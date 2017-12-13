@@ -1,9 +1,14 @@
 import java.util.List;
 
+public enum DrawMode {
+  PROBLEM, SOLUTION
+}
+
 public class Screen {
   
   private ArrayList<Furniture> furniture = new ArrayList<Furniture>();
   private Room room;
+  private DrawMode currentMode = DrawMode.PROBLEM;
   
   public void addRoom(Room room) {
     this.room = room;
@@ -11,6 +16,11 @@ public class Screen {
   
   public void addFurniture(Furniture f) {
     furniture.add(f);
+  }
+  
+  public void clearFurniture() {
+    currentMode = DrawMode.SOLUTION;
+    furniture.clear();
   }
   
   public void hide() {
@@ -35,10 +45,26 @@ public class Screen {
   }
   
   public void draw() {
-    for (Furniture item : furniture) {
-      item.draw();
+    if (currentMode == DrawMode.PROBLEM) {
+      for (Furniture item : furniture) {
+        item.draw();
+      }
+      room.draw();
+    } else {
+      room.draw();
+      for (Furniture item : furniture) {
+        item.draw();
+      }
     }
-    room.draw();
+    
+  }
+  
+  public float getRoomX() {
+    return room.getX();
+  }
+  
+  public float getRoomY() {
+    return room.getY();
   }
   
 }

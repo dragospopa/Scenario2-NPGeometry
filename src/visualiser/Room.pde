@@ -5,8 +5,7 @@ public class Room implements Drawable {
   
   public Room(ArrayList<Float> roomVertices) {
     roomShape = createPolygon(roomVertices);
-    x_pos = WINDOW_WIDTH / 2 / m_scale;
-    y_pos = WINDOW_HEIGHT / 2 / m_scale;
+    setCenterPos();
     //println("roomshape is " + roomShape.width + "x" + roomShape.height);
   }
   
@@ -27,20 +26,21 @@ public class Room implements Drawable {
   }
   
   public void draw() {
+    //println("room has dimensions " + roomShape.width + "x" + roomShape.height);
     stroke(0);
+    shapeMode(CORNERS);
     pushMatrix();
+    setCenterPos();
     translate(x_pos, y_pos);
     scale(m_scale);
+    shape(roomShape, 0, 0);
     translate(-x_pos, -y_pos);
-    setCenterPos();
-    shapeMode(CENTER);
-    shape(roomShape, x_pos, y_pos);
     popMatrix();
   }
   
   private void setCenterPos() {
-    x_pos = WINDOW_WIDTH / 2;
-    y_pos = WINDOW_HEIGHT / 2;
+    x_pos = (WINDOW_WIDTH / 2) - (m_scale * roomShape.width / 2);
+    y_pos = (WINDOW_HEIGHT / 2) - (m_scale * roomShape.height / 2);
   }
   
   public int getWidth() {
@@ -51,4 +51,11 @@ public class Room implements Drawable {
     return round(roomShape.height);
   }
   
+  public float getX() {
+    return x_pos;
+  }
+  
+  public float getY() {
+    return y_pos;
+  }
 }

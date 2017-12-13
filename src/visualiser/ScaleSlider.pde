@@ -5,7 +5,9 @@ public class ScaleSlider {
   
   private final float bar_x, bar_y, width, height;
   private final float slider_min_pos, slider_max_pos;
-  private float slider_x, slider_y, slider_width, slider_height;
+  private final float slider_x;
+  private float slider_y;
+  private float slider_width, slider_height;
   private boolean mouse_pressed_slider = false;
   
   public ScaleSlider(float x, float y, float width, float height) {
@@ -14,7 +16,7 @@ public class ScaleSlider {
     this.width = width;
     this.height = height;
     slider_x = bar_x;
-    slider_y = bar_y - (height / 2);
+    slider_y = bar_y * 1.3;
     slider_width = width * 1.4;
     slider_height = height / 15;
     slider_min_pos = bar_y - (height / 2);

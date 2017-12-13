@@ -6,21 +6,29 @@ public class Furniture implements Drawable {
   private static final color MAX_COLOUR = #FA0D00; // (strong red)
   
   private final color m_colour;
+  private final Screen screen;
   private PShape m_shape;
   private float pos_x, pos_y;
   private float velocity_x, velocity_y;
   private float m_scale = 1.0;
+  private boolean stationary;
   
-  public Furniture(ArrayList<Float> vertices, int cost) {
+  public Furniture(ArrayList<Float> vertices, int cost, Screen screen, boolean stationary) {
     m_shape = createPolygon(vertices);
     m_colour = lerpColor(MIN_COLOUR, MAX_COLOUR, cost / COST_RANGE);
     m_shape.setFill(m_colour);
-    randomise();
+    this.screen = screen;
+    this.stationary = stationary;
+    if (!stationary) {
+      randomise();
+    } 
   }
   
   public void show() {
     m_shape.setVisible(true);
-    randomise();
+    if (!stationary) {
+      randomise();
+    }
   }
   
   private void randomise() {
@@ -73,11 +81,22 @@ public class Furniture implements Drawable {
     updatePos();
     stroke(0);
     fill(m_colour);
-    pushMatrix();
-    scale(m_scale);
-    shapeMode(CENTER);
-    shape(m_shape, pos_x / m_scale, pos_y / m_scale);
-    popMatrix();
-    clampToScreen();
+    if (stationary) {
+      float x = screen.getRoomX();
+      float y = screen.getRoomY();
+      pushMatrix();
+      translate(x, y);
+      scale(m_scale);
+      shape(m_shape, 0, 0);
+      popMatrix();
+    } else {
+      pushMatrix();
+      scale(m_scale);
+      shapeMode(CENTER);
+      shape(m_shape, pos_x / m_scale, pos_y / m_scale);
+      popMatrix();
+      clampToScreen();
+    }
+    
   }
 }

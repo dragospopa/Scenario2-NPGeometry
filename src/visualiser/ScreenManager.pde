@@ -5,6 +5,14 @@ public class ScreenManager {
   
   public ScreenManager() {}
   
+  public Screen getScreen(int i) {
+    return screens.get(i - 1);
+  }
+  
+  public void clearActiveScreen() {
+    screens.get(active_screen).clearFurniture();
+  }
+  
   public void addScreen(Screen screen) {
     screens.add(screen);
   }
