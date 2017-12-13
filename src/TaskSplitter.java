@@ -1,8 +1,4 @@
-import jdk.nashorn.internal.scripts.JO;
-
-import javax.swing.text.html.HTMLDocument;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by tomaszczernuszenko on 13/12/2017.

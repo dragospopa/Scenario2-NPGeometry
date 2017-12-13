@@ -1,4 +1,3 @@
-import com.sun.javafx.tk.Toolkit;
 
 /**
  * Created by tomaszczernuszenko on 13/12/2017.
@@ -16,11 +15,17 @@ public class TaskThread extends Thread {
     }
 
     public void run() {
-        solver.solve(order);
+        int attempts=0;
+        do {
+            solver.solve(order);
+            attempts++;
+            this.solver = (solver.getCoverage()<30&&attempts<20) ? new CaseSolver(this.solver.room,this.solver.decorations):this.solver;
+        } while (solver.getCoverage()<30&&attempts<20);
         listener.notifyJobDone(extractResult(), order);
     }
 
     public String extractResult(){
+        System.out.println(solver.getCoverage());
         return solver.extractResult();
     }
 }

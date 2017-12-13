@@ -29,15 +29,14 @@ public class CaseSolver {
         for (Furniture f: decorations) {
             IlyaCoordinate bestDropPoint;
 
-            bestDropPoint = hypotheticalLowestCentreOfGravity(f, generateRandomValidDropPoints(f, 100));
+            bestDropPoint = hypotheticalLowestCentreOfGravity(f, generateRandomValidDropPoints(f, 1000));
 
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
-        System.out.println("Done. Numer of elements: " + placedItems.size());
+//        System.out.println("Done. Number of elements: " + placedItems.size());
         OutputHandler handler = new OutputHandler();
         result = handler.formatForProblem(order, placedItems);
-
     }
 
     private void sortDecorations(){
@@ -100,6 +99,15 @@ public class CaseSolver {
             }
         }
         return minPoint;
+    }
+
+    public double getCoverage() {
+        double roomArea = room.getPolygon(room.vertices).getArea();
+        double polygonArea = 0;
+        for (Furniture furniture: placedItems) {
+            polygonArea+=furniture.getPolygon(furniture.vertices).getArea();
+        }
+        return (polygonArea/roomArea)*100;
     }
 
     public String extractResult(){
