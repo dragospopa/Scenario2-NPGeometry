@@ -50,5 +50,10 @@ public class OutputHandler {
         }
         return output.toString();
     }
+
+    void generateOutputFile(ArrayList<ArrayList<Shape>> shapesList) throws IOException {
+        formatHeader();
+        this.output.write(formatForAll(shapesList));
+    }
 }
 
