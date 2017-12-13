@@ -21,7 +21,7 @@ public class CaseSolver {
 
     public void solve(){
         for (Furniture f: decorations) {
-            //f.gravityRotate();
+            f.gravityRotate(1000);
         }
         sortDecorations();
         for (Furniture f: decorations) {

@@ -32,16 +32,35 @@ public abstract class Shape implements Comparable{
         setExtrema();
     }
 
-    public IlyaCoordinate centreOfMass(){
+    public IlyaCoordinate centreOfMass(ArrayList<IlyaCoordinate> vertices){
         double sum_x = 0, sum_y = 0;
-        for (IlyaCoordinate coords : this.vertices){
+        for (IlyaCoordinate coords : vertices){
             sum_x += coords.getX();
             sum_y += coords.getY();
         }
-        return new IlyaCoordinate(sum_x/this.vertices.size(),sum_y/this.vertices.size());
+        return new IlyaCoordinate(sum_x/vertices.size(),sum_y/vertices.size());
+    }
+
+    public void gravityRotate(double precision) {
+        double interval = 360/precision;
+        double idealRotation = 0;
+        IlyaCoordinate currentMin = centreOfMass(tempVertices);
+        IlyaCoordinate temp;
+        for (int i = 0;i<precision;i++) {
+            double rotationAngle = interval*i;
+            rotate(rotationAngle);
+            temp = centreOfMass(this.tempVertices);
+            if (temp.getY()<currentMin.getY()) {
+                currentMin = temp;
+                idealRotation = rotationAngle;
+            }
+        }
+        rotate(idealRotation);
+        this.vertices = this.tempVertices;
     }
 
     public void rotate(double degrees){
+        degrees = Math.toRadians(degrees);
         tempVertices = new ArrayList<>();
         for (IlyaCoordinate coords : this.vertices){
             tempVertices.add(new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees)));
