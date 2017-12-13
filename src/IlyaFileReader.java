@@ -12,10 +12,10 @@ public class IlyaFileReader {
 
     public static ArrayList<Room> rooms;
 
-    public static ArrayList<ArrayList<Furniture>> decorationss;
+    public static ArrayList<ArrayList<Furniture>> decorations;
 
     public IlyaFileReader() {
-        decorationss = new ArrayList<>();
+        decorations = new ArrayList<>();
         rooms = new ArrayList<>();
     }
 
@@ -89,7 +89,7 @@ public class IlyaFileReader {
                     decoration.add(furniture);
                 }
                 rooms.add(room);
-                decorationss.add(decoration);
+                decorations.add(decoration);
             }
 
             bufferedReader.close();
@@ -100,6 +100,6 @@ public class IlyaFileReader {
             System.out.println("Error reading file '" + fileName + "'");
             System.exit(0);
         }
-        System.out.println("File Read. Number of rooms: " +rooms.size() + "; Number of decoration sets: " + decorationss.size());
+        System.out.println("File Read. Number of rooms: " +rooms.size() + "; Number of decoration sets: " + decorations.size());
     }
 }
