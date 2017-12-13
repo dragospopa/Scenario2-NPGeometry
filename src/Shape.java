@@ -25,7 +25,11 @@ public abstract class Shape {
     }
 
     public ArrayList<IlyaCoordinate> rotate(double degrees){
-        return vertices;
+        ArrayList<IlyaCoordinate> rotatedVertices = new ArrayList<>();
+        for (IlyaCoordinate coordinate:vertices) {
+            rotatedVertices.add(new IlyaCoordinate((coordinate.getX())*Math.cos(degrees)-(coordinate.getY())*Math.sin(coordinate.getY()), (coordinate.getX())*Math.sin(degrees)+(coordinate.getY())*Math.cos(degrees)));
+        }
+        return rotatedVertices;
     }
 
     public Geometry convexHull(){
