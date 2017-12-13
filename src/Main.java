@@ -8,18 +8,7 @@ public class Main {
         IlyaFileReader ilyaFileReader = new IlyaFileReader();
         ilyaFileReader.readFile();
 
-        // stuff that was already here
-        ArrayList<IlyaCoordinate> ilyaCoordinates = new ArrayList<>();
-        ilyaCoordinates.add(new IlyaCoordinate(0, 0));
-        ilyaCoordinates.add(new IlyaCoordinate(4, 0));
-        ilyaCoordinates.add(new IlyaCoordinate(4, 4));
-        ilyaCoordinates.add(new IlyaCoordinate(0, 4));
-        AreaCalculator calculator = new AreaCalculator();
-        InputHandler inputHandler = new InputHandler(ilyaCoordinates);
-        double area = calculator.calculateArea(inputHandler.getXCoordinates(ilyaCoordinates), inputHandler.getYCoordinates(ilyaCoordinates), inputHandler.getNumberOfPoints());
-        System.out.println(area);
-
-        Polygon p = IlyaFileReader.decorationss.get(0).get(0).getPolygon();
-        System.out.println(p);
+        CaseSolver caseSolver = new CaseSolver(ilyaFileReader.rooms.get(0),ilyaFileReader.decorations.get(0));
+        caseSolver.solve();
     }
 }
