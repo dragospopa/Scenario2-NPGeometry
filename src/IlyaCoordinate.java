@@ -23,5 +23,7 @@ public class IlyaCoordinate {
         return Y;
     }
 
-
+    public IlyaCoordinate clone(){
+        return new IlyaCoordinate(this.X, this.Y);
+    }
 }

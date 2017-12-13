@@ -5,6 +5,8 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
+import java.awt.image.AreaAveragingScaleFilter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 public abstract class Shape implements Comparable{
     ArrayList<IlyaCoordinate> vertices;
     ArrayList<IlyaCoordinate> tempVertices;
+    ArrayList<IlyaCoordinate> rotatedCoordinates;
     int unitCost;
     double realCost;
 
@@ -21,7 +24,7 @@ public abstract class Shape implements Comparable{
     // for furniture
     public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
         this(vertices);
-        tempVertices = this.vertices;
+        tempVertices = new ArrayList<>(this.vertices);
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
     }
@@ -49,7 +52,7 @@ public abstract class Shape implements Comparable{
         for (int i = 0;i<precision;i++) {
             double rotationAngle = interval*i;
             rotate(rotationAngle);
-            temp = centreOfMass(this.tempVertices);
+            temp = centreOfMass(this.rotatedCoordinates);
             if (temp.getY()<currentMin.getY()) {
                 currentMin = temp;
                 idealRotation = rotationAngle;
@@ -59,12 +62,13 @@ public abstract class Shape implements Comparable{
         this.vertices = this.tempVertices;
     }
 
-    public void rotate(double degrees){
+    public ArrayList<IlyaCoordinate> rotate(double degrees){
         degrees = Math.toRadians(degrees);
-        tempVertices = new ArrayList<>();
+        rotatedCoordinates = new ArrayList<>();
         for (IlyaCoordinate coords : this.vertices){
-            tempVertices.add(new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees)));
+            rotatedCoordinates.add(new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees)));
         }
+        return rotatedCoordinates;
     }
 
     public double area(){
@@ -98,7 +102,7 @@ public abstract class Shape implements Comparable{
     }
 
     public void translateToStartFrom(IlyaCoordinate coordinates){
-        tempVertices.clear();
+        tempVertices = new ArrayList<>();
         for (IlyaCoordinate c: vertices) {
             tempVertices.add(new IlyaCoordinate(c.getX() + coordinates.getX(), c.getY() + coordinates.getY()));
         }

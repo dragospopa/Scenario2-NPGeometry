@@ -23,7 +23,7 @@ public class CaseSolver {
         for (Furniture f: decorations) {
             f.gravityRotate(1000);
         }
-        sortDecorations();
+        sortDecorations(); //suspition that the sort does not work...
         for (Furniture f: decorations) {
             IlyaCoordinate bestDropPoint;
 
@@ -32,6 +32,7 @@ public class CaseSolver {
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
+        System.out.println("Done");
     }
 
     private void sortDecorations(){
@@ -40,7 +41,6 @@ public class CaseSolver {
 
     private ArrayList<IlyaCoordinate> generateRandomValidDropPoints(Furniture f, int numberOfAttempts){
         ArrayList<IlyaCoordinate> coordinates = new ArrayList<>();
-
         for (int i = 0; i < numberOfAttempts; i++) {
             IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
             f.translateToStartFrom(coordinate);
@@ -48,7 +48,7 @@ public class CaseSolver {
                 coordinates.add(coordinate);
         }
 
-        return coordinates;
+    return coordinates;
     }
 
     private boolean doesElementFit(Polygon p){
@@ -68,13 +68,13 @@ public class CaseSolver {
 
     private double hypotheticalLowestCentreOfGravity(Furniture f, IlyaCoordinate dropPoint){
         double shift = 0;
-        while(doesElementFit(f.getPolygon(f.getTempVertices()))){
-            f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY()+shift));
+
+        while (doesElementFit(f.getPolygon(f.getTempVertices()))) {
+            f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY() + shift));
             shift -= 0.01;
         }
-
-        if(shift < 0)
-            shift+=0.01;
+        if (shift < 0)
+            shift += 0.01;
         return shift;
     }
 
