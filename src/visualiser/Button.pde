@@ -3,10 +3,12 @@ public class Button implements Drawable {
   private final float height = WINDOW_HEIGHT / 18;
   private final color NORMAL_COLOUR = 255;
   private final color HIGHLIGHT_COLOUR = #7fa5e2;
+  private final color ACTIVE_COLOUR = #FFB003;
   private final color PRESSED_COLOUR = #59cc8f;
   
   private PShape rect;
-  private color current_colour = 255;
+  private color current_fill = 255;
+  private color current_stroke = 0;
   private int btn_number;
   private int pos_x, pos_y;
   private boolean mouse_touching;
@@ -15,24 +17,27 @@ public class Button implements Drawable {
     btn_number = number;
     rectMode(CENTER);
     rect = createShape(RECT, 0, 0, width, height); 
-    rect.setFill(255);
-    rect.setStroke(0);
+    rect.setFill(current_fill);
+    rect.setStroke(current_stroke);
     rect.setStrokeWeight(4);
   }
   
   public void draw() {
     checkForMouseTouch();
     if (mouse_touching) {
-      current_colour = HIGHLIGHT_COLOUR;
+      current_fill = HIGHLIGHT_COLOUR;
       if (mousePressed) {
-        current_colour = PRESSED_COLOUR;
+        current_fill = PRESSED_COLOUR;
+        current_stroke = ACTIVE_COLOUR;
+        //rect.setStrokeWeight(200);
         screenManager.switchToScreen(btn_number);
       }
     } else {
-      current_colour = NORMAL_COLOUR;
+      current_fill = NORMAL_COLOUR;
     }
     
-    rect.setFill(current_colour);
+    rect.setStroke(current_stroke);
+    rect.setFill(current_fill);
     shape(rect);
     fill(0);
     textSize(55);
@@ -46,13 +51,6 @@ public class Button implements Drawable {
     } else {
       mouse_touching = false;
     } 
-  }
-  
-  void mousePressed() {
-    println("Mouse pressed!");
-    if (mouse_touching) {
-      
-    }
   }
   
   public void show() {
