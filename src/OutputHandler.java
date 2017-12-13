@@ -61,9 +61,11 @@ public class OutputHandler {
 
     public void generateOutputFile(ArrayList<String> outputs) throws IOException {
         formatHeader();
-        String s = "";
         StringBuilder builder = new StringBuilder();
         for (String output : outputs) {
+            if(output.charAt(output.length()-1)==';'){
+                output = output.substring(0, output.length()-1);
+            }
             builder.append(output);
             builder.append("\n");
         }

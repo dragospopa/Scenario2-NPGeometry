@@ -41,6 +41,7 @@ public class TaskSplitter implements JobDoneListener{
                 handler.generateOutputFile(results);
             } catch (Exception e){
                 System.out.println("Houston we have a problem;");
+                System.out.println(e.toString());
             }
         }
     }
