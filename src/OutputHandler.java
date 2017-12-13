@@ -19,7 +19,8 @@ public class OutputHandler {
         output.write("p1n1h08ouvfgepn6gupnqdblut\n");
     }
 
-    String generatePointSequence(ArrayList<IlyaCoordinate> points) {
+    String generatePointSequence(Shape shape) {
+        ArrayList<IlyaCoordinate> points =shape.vertices;
         StringBuilder pointSequence = new StringBuilder();
         for (IlyaCoordinate coordinate:points) {
             String temp=" (" + coordinate.getX() + ", " + coordinate.getY() +"),";
@@ -29,6 +30,25 @@ public class OutputHandler {
         return pointSequence.toString();
     }
 
-    String generateLocationList()
+    String generateLocationList(ArrayList<Shape> shapes) {
+        StringBuilder locationList = new StringBuilder();
+        for (Shape shape: shapes) {
+            locationList.append(generatePointSequence(shape));
+        }
+        return locationList.toString();
+    }
+
+    String formatForProblem(int problemNumber,ArrayList<Shape> shapes) {
+        return problemNumber+":"+generateLocationList(shapes);
+    }
+
+    String formatForAll(ArrayList<ArrayList<Shape>> shapesList) {
+        StringBuilder output = new StringBuilder();
+        for (int i=0;i<shapesList.size();i++) {
+            output.append(formatForProblem(i,shapesList.get(i)));
+            output.append("\n");
+        }
+        return output.toString();
+    }
 }
 
