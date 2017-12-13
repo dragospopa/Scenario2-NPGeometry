@@ -70,6 +70,7 @@ public class OutputHandler {
             builder.append("\n");
         }
         this.output.write(builder.toString());
+        this.output.close();
     }
 }
 
