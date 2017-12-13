@@ -13,13 +13,15 @@ public class CaseSolver {
     ArrayList<Furniture> decorations;
     ArrayList<Furniture> placedItems;
 
+    String result;
+
     public CaseSolver(Room room, ArrayList<Furniture> decorations) {
         this.room = room;
         this.decorations = decorations;
         this.placedItems = new ArrayList<>();
     }
 
-    public void solve(){
+    public void solve(int order){
         for (Furniture f: decorations) {
             f.gravityRotate(1000);
         }
@@ -34,7 +36,8 @@ public class CaseSolver {
         }
         System.out.println("Done. Numer of elements: " + placedItems.size());
         OutputHandler handler = new OutputHandler();
-        System.out.println(handler.formatForProblem(1, placedItems));
+        result = handler.formatForProblem(order, placedItems);
+
     }
 
     private void sortDecorations(){
@@ -97,5 +100,9 @@ public class CaseSolver {
             }
         }
         return minPoint;
+    }
+
+    public String extractResult(){
+        return result;
     }
 }
