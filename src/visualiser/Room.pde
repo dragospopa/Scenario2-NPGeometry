@@ -28,18 +28,19 @@ public class Room implements Drawable {
   
   public void draw() {
     stroke(0);
-    //translate(x_pos, y_pos);
+    pushMatrix();
+    translate(x_pos, y_pos);
     scale(m_scale);
-    //translate(-x_pos, -y_pos);
+    translate(-x_pos, -y_pos);
     setCenterPos();
     shapeMode(CENTER);
     shape(roomShape, x_pos, y_pos);
-    scale(1 / m_scale);
+    popMatrix();
   }
   
   private void setCenterPos() {
-      x_pos = (WINDOW_WIDTH / 2 / m_scale) - (roomShape.width / 2 / m_scale);
-      y_pos = (WINDOW_HEIGHT / 2 / m_scale) + (roomShape.height / 2 / m_scale);
+    x_pos = WINDOW_WIDTH / 2;
+    y_pos = WINDOW_HEIGHT / 2;
   }
   
   public int getWidth() {

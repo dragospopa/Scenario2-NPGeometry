@@ -63,11 +63,11 @@ void draw() {
   background(#77939b);
   textSize(65);
   textAlign(CENTER);
+  strokeWeight(3);
+  screenManager.drawActiveScreen();
   fill(255);
   text("Furnishing Crab Caves - a visualisation", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 20);
   stroke(0);
-  strokeWeight(3);
-  buttonMenu.draw();
-  screenManager.drawActiveScreen();
   roomSlider.draw();
+  buttonMenu.draw();
 }

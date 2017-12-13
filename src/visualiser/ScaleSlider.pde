@@ -1,7 +1,7 @@
 public class ScaleSlider {
   
   private final float MIN_SCALE_AMOUNT = 10;
-  private final float MAX_SCALE_AMOUNT = 500;
+  private final float MAX_SCALE_AMOUNT = 300;
   
   private final float bar_x, bar_y, width, height;
   private final float slider_min_pos, slider_max_pos;
