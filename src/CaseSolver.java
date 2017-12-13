@@ -52,7 +52,7 @@ public class CaseSolver {
     }
 
     private boolean doesElementFit(Polygon p){
-        if (!room.getPolygon(room.vertices).covers(p))
+        if (!room.getPolygon(room.vertices).covers(p)) //This line throws a NPE not sure where it originates from
             return false;
         for (Furniture addedF: placedItems) {
             if(p.intersects(addedF.getPolygon(addedF.getTempVertices())))

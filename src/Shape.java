@@ -77,9 +77,11 @@ public abstract class Shape implements Comparable{
             Coordinate coordinate = new Coordinate(v.get(i).getX(), v.get(i).getY());
             coordinates[i] = coordinate;
         }
-        coordinates[coordinates.length-1] = new Coordinate(v.get(0).getX(), v.get(0).getY());
-        CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
-        return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
+        if (v.size()!=0) {
+            coordinates[coordinates.length - 1] = new Coordinate(v.get(0).getX(), v.get(0).getY());
+            CoordinateSequence coordinateSequence = new CoordinateArraySequence(coordinates);
+            return new Polygon(new LinearRing(coordinateSequence, new GeometryFactory()), null, new GeometryFactory());
+        } else return null;
     }
 
     public double value(){

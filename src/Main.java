@@ -23,6 +23,7 @@ public class Main {
 //        }
 
         CaseSolver caseSolver = new CaseSolver(ilyaFileReader.rooms.get(0),ilyaFileReader.decorationss.get(0));
+        System.out.println(ilyaFileReader.rooms.get(0).vertices);
         caseSolver.solve();
     }
 }
