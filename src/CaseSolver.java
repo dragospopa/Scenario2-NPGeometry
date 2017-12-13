@@ -25,18 +25,10 @@ public class CaseSolver {
         }
         sortDecorations();
         for (Furniture f: decorations) {
-            double minimalCentre=Double.MAX_VALUE;
-            double currentMinCentre;
-            IlyaCoordinate currentDropPoint = null, bestDropPoint = null;
+            IlyaCoordinate bestDropPoint;
 
-            for (int i = 0; i < 10; i++) {
-                //currentDropPoint = generateRandomValidDropPoint();
-                currentMinCentre = hypotheticalLowestCentreOfGravity(f, currentDropPoint);
-                if(currentMinCentre < minimalCentre){
-                    minimalCentre = currentMinCentre;
-                    bestDropPoint = currentDropPoint;
-                }
-            }
+            bestDropPoint = hypotheticalLowestCentreOfGravity(f, generateRandomValidDropPoints(f, 100));
+
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
@@ -46,33 +38,56 @@ public class CaseSolver {
         Collections.sort(decorations);
     }
 
-    private IlyaCoordinate generateRandomValidDropPoint(Furniture f){
-        IlyaCoordinate coordinate = null;
-        //we might want to generate a few different valid points and see which of them work best
-        do {
-            coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
-            f.translateToStartFrom(coordinate);
-        } while (!doesElementFit(f.getPolygon(f.tempVertices)));
+    private ArrayList<IlyaCoordinate> generateRandomValidDropPoints(Furniture f, int numberOfAttempts){
+        ArrayList<IlyaCoordinate> coordinates = new ArrayList<>();
 
-        return coordinate;
+        for (int i = 0; i < numberOfAttempts; i++) {
+            IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
+            f.translateToStartFrom(coordinate);
+            if(doesElementFit(f.getPolygon(f.tempVertices)))
+                coordinates.add(coordinate);
+        }
+
+        return coordinates;
     }
 
     private boolean doesElementFit(Polygon p){
         if (!room.getPolygon(room.vertices).covers(p))
             return false;
         for (Furniture addedF: placedItems) {
-            if(p.intersects(addedF.getPolygon()))
+            if(p.intersects(addedF.getPolygon(addedF.getTempVertices())))
                 return false;
         }
         return true;
     }
 
     private void applyGravity(Furniture f, IlyaCoordinate dropPoint){
-
+        f.translateToStartFrom(dropPoint);
+        placedItems.add(f);
     }
 
     private double hypotheticalLowestCentreOfGravity(Furniture f, IlyaCoordinate dropPoint){
+        double shift = 0;
+        while(doesElementFit(f.getPolygon(f.getTempVertices()))){
+            f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY()+shift));
+            shift -= 0.01;
+        }
 
-        return -1;
+        if(shift < 0)
+            shift+=0.01;
+        return shift;
+    }
+
+    private IlyaCoordinate hypotheticalLowestCentreOfGravity(Furniture f, ArrayList<IlyaCoordinate> dropPoints){
+        double min = Double.MAX_VALUE, x;
+        IlyaCoordinate minPoint = null;
+        for (IlyaCoordinate dropPoint : dropPoints) {
+            x = hypotheticalLowestCentreOfGravity(f, dropPoint);
+            if(x < min) {
+                min = x;
+                minPoint = dropPoint;
+            }
+        }
+        return minPoint;
     }
 }
