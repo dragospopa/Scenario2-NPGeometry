@@ -21,7 +21,6 @@ public abstract class Shape implements Comparable{
     // for furniture
     public Shape(int unitCost, ArrayList<IlyaCoordinate> vertices) {
         this(vertices);
-        tempVertices = this.vertices;
         this.unitCost = unitCost;
         this.realCost = this.area() * unitCost;
     }
@@ -29,6 +28,7 @@ public abstract class Shape implements Comparable{
     // for the roomz
     public Shape(ArrayList<IlyaCoordinate> vertices) {
         this.vertices = vertices;
+        tempVertices = vertices;
         setExtrema();
     }
 

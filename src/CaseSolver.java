@@ -44,7 +44,7 @@ public class CaseSolver {
         for (int i = 0; i < numberOfAttempts; i++) {
             IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
             f.translateToStartFrom(coordinate);
-            if(doesElementFit(f.getPolygon(f.tempVertices)))
+            if(doesElementFit(f.getPolygon(f.getTempVertices())))
                 coordinates.add(coordinate);
         }
 
@@ -52,11 +52,16 @@ public class CaseSolver {
     }
 
     private boolean doesElementFit(Polygon p){
-        if (!room.getPolygon(room.vertices).covers(p)) //This line throws a NPE not sure where it originates from
-            return false;
-        for (Furniture addedF: placedItems) {
-            if(p.intersects(addedF.getPolygon(addedF.getTempVertices())))
+        try {
+            if (!room.getPolygon(room.vertices).contains(p)) //This line throws a NPE not sure where it originates from
                 return false;
+            for (Furniture addedF : placedItems) {
+                if (p.intersects(addedF.getPolygon(addedF.getTempVertices())))
+                    return false;
+            }
+        } catch (Exception e){
+            System.out.println();
+            return false;
         }
         return true;
     }
