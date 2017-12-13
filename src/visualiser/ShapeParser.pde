@@ -1,5 +1,7 @@
 // Static helper functions
 
+ArrayList<Float> costs = new ArrayList<Float>();
+
 public PShape createPolygon(ArrayList<Float> coordinates) {
   PShape new_shape = createShape();
   new_shape.beginShape();

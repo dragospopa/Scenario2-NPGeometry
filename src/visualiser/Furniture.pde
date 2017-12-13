@@ -1,7 +1,11 @@
 public class Furniture implements Drawable {
   
   private static final float MAX_SPEED = 3f;
-  private final float cost;
+  private static final float COST_RANGE = 169f; // highest possible cost in sample set is 5408
+  private static final color MIN_COLOUR = #B7ECFF; // (light blue)
+  private static final color MAX_COLOUR = #FA0D00; // (strong red)
+  
+  private final color m_colour;
   private PShape m_shape;
   private float pos_x, pos_y;
   private float velocity_x, velocity_y;
@@ -9,8 +13,8 @@ public class Furniture implements Drawable {
   
   public Furniture(ArrayList<Float> vertices, int cost) {
     m_shape = createPolygon(vertices);
-    this.cost = cost;
-    m_shape.setFill(#e26ca9);
+    m_colour = lerpColor(MIN_COLOUR, MAX_COLOUR, cost / COST_RANGE);
+    m_shape.setFill(m_colour);
     randomise();
   }
   
@@ -68,7 +72,7 @@ public class Furniture implements Drawable {
   public void draw() {
     updatePos();
     stroke(0);
-    fill(#e26ca9);
+    fill(m_colour);
     pushMatrix();
     scale(m_scale);
     shapeMode(CENTER);
