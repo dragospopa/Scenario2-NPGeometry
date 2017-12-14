@@ -28,7 +28,7 @@ public class TaskThread extends Thread {
     }
 
     public String extractResult(){
-        System.out.println(solver.getCoverage());
-        return solver.extractResult();
+        System.out.println(currentMax.getCoverage());
+        return currentMax.extractResult();
     }
 }
