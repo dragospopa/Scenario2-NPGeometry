@@ -1,3 +1,5 @@
+import javafx.beans.binding.StringBinding;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -52,9 +54,23 @@ public class OutputHandler {
         return output.toString();
     }
     
-    public void generateOutputFile(ArrayList<ArrayList<Furniture>> shapesList) throws IOException {
+//    public void generateOutputFile(ArrayList<ArrayList<Furniture>> shapesList) throws IOException {
+//        formatHeader();
+//        this.output.write(formatForAll(shapesList));
+//    }
+
+    public void generateOutputFile(ArrayList<String> outputs) throws IOException {
         formatHeader();
-        this.output.write(formatForAll(shapesList));
+        StringBuilder builder = new StringBuilder();
+        for (String output : outputs) {
+            if(output.charAt(output.length()-1)==';'){
+                output = output.substring(0, output.length()-1);
+            }
+            builder.append(output);
+            builder.append("\n");
+        }
+        this.output.write(builder.toString());
+        this.output.close();
     }
 }
 
