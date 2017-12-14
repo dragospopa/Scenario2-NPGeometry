@@ -1,7 +1,7 @@
 import java.util.List;
 
-public static final int WINDOW_WIDTH = 1600;
-public static final int WINDOW_HEIGHT = 1600;
+public static final int WINDOW_WIDTH = 1000;
+public static final int WINDOW_HEIGHT = 1000;
 
 // no. of pixels per unit of drawing space
 public static final int PPU = 90;

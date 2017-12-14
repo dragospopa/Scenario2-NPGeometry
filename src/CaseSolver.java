@@ -27,19 +27,19 @@ public class CaseSolver {
     }
 
     public void solve(int order){
-        if(order!=11){
-            result=" ";
-            return;
-        }
+//        if(order!=11){
+//            result=" ";
+//            return;
+//        }
 
         sortDecorations();//suspition that the sort does not work...
         System.out.println("Number of elements to process:" + decorations.size());
         boolean outcome;
         for (int i = 0; i < decorations.size(); i++) {
             Furniture f = decorations.get(i);
-            System.out.print("Working on element: " + i + "; Unit cost: " + f.getRealCost() + "; ");
+            System.out.print("Working on element: " + i + "; Real cost: " + f.getRealCost() + "; ");
 
-            outcome = generateRandomValidDropPoints(f, 100, 10*1000);
+            outcome = generateRandomValidDropPoints(f, 10, 360);
             System.out.println(outcome + "; Coverage: " + getCoverage());
             if(outcome)
                 System.out.println("Location: " +placedItems.get(placedItems.size()-1).getVertices());
@@ -72,22 +72,41 @@ public class CaseSolver {
     }
 
     private boolean generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
-        int i=0;
+
+        for(Furniture placedF : placedItems) {
+            for (IlyaCoordinate c : placedF.getVertices()) {
+
+                if (tryRotatingAndCommit(f, precision, c))
+                    return true;
+
+                int i=0;
+                while (i < numberOfAttempts) {
+                    IlyaCoordinate coordinate = new IlyaCoordinate(c.getX() - 1, c.getX() + 1, c.getY() - 1, c.getY() + 1);
+                    if (checkIfCoordinateInRoom(coordinate) && !checkIfCoordinateInPlaced(coordinate))
+                        if (tryRotatingAndCommit(f, precision, coordinate))
+                            return true;
+                    i++;
+                }
+            }
+        }
 
         for (IlyaCoordinate c:room.getVertices()) {
 
+            if(tryRotatingAndCommit(f, precision, c))
+                return true;
+            int i=0;
             while(i<numberOfAttempts) {
                 IlyaCoordinate coordinate = new IlyaCoordinate(c.getX()-1, c.getX()+1, c.getY()-1, c.getY()+1);
                 if(!checkIfCoordinateInRoom(coordinate))
                     continue;
 
-                f.translateToStartFrom(coordinate);
-                if(tryRotatingAndCommit(f, precision))
+                if(tryRotatingAndCommit(f, precision, coordinate))
                     return true;
 
                 i++;
             }
         }
+
         return false;
     }
 
@@ -99,13 +118,33 @@ public class CaseSolver {
         return room.getPolygon(room.getVertices()).covers(point);
     }
 
-    private boolean tryRotatingAndCommit(Furniture f, double precision){
+    private boolean checkIfCoordinateInPlaced(IlyaCoordinate coordinate){
+        for (Furniture f: placedItems) {
+            Coordinate coordinate1 = new Coordinate(coordinate.getX(), coordinate.getY());
+
+            CoordinateSequence coordinateSequence = new CoordinateArraySequence(new Coordinate[]{coordinate1});
+            Point point = new Point(coordinateSequence, new GeometryFactory());
+            if(f.getPolygon(f.getVertices()).covers(point))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfCoordinateInRoom(Coordinate coordinate){
+
+        CoordinateSequence coordinateSequence = new CoordinateArraySequence(new Coordinate[]{coordinate});
+        Point point = new Point(coordinateSequence, new GeometryFactory());
+        return room.getPolygon(room.getVertices()).covers(point);
+    }
+
+    private boolean tryRotatingAndCommit(Furniture f, double precision, IlyaCoordinate startPoint){
         double interval = 360/precision;
         for (int j = 0; j < precision; j++) {
             double rotationAngle = interval*j;
-            f.rotateVertices(rotationAngle, f.getTempVertices());
-            if(doesElementFit(f.getPolygon(f.getRotatedCoordinates()))){
-                f.commitRotatedToMain();
+            f.rotateVertices(rotationAngle);
+            f.translateToStartFrom(startPoint, f.getRotatedCoordinates());
+            if(doesElementFit(f.getPolygon(f.getTempVertices()))){
+                f.commitTempToMain();
                 placedItems.add(f);
                 return true;
             }
@@ -114,10 +153,15 @@ public class CaseSolver {
     }
 
     private boolean doesElementFit(Polygon p){
-        if (!room.getPolygon(room.getVertices()).contains(p))
+        if (!room.getPolygon(room.getVertices()).covers(p))
             return false;
+        Coordinate[] coordinates = p.getCoordinates();
+        for (Coordinate c: coordinates) {
+            if(!checkIfCoordinateInRoom(c))
+                return false;
+        }
         for (Furniture addedF : placedItems) {
-            if (p.overlaps(addedF.getPolygon(addedF.getTempVertices())))
+            if (p.intersects(addedF.getPolygon(addedF.getTempVertices())))
                 return false;
         }
         return true;

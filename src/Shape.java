@@ -42,10 +42,10 @@ public abstract class Shape implements Comparable{
         return new IlyaCoordinate(sum_x/vertices.size(),sum_y/vertices.size());
     }
 
-    public ArrayList<IlyaCoordinate> rotateVertices(double degrees, ArrayList<IlyaCoordinate> verticesToRotate){
+    public ArrayList<IlyaCoordinate> rotateVertices(double degrees){
         degrees = Math.toRadians(degrees);
         rotatedCoordinates = new ArrayList<>();
-        for (IlyaCoordinate coords : verticesToRotate){
+        for (IlyaCoordinate coords : vertices){
             IlyaCoordinate temp = new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees));
             rotatedCoordinates.add(temp);
         }
@@ -82,9 +82,9 @@ public abstract class Shape implements Comparable{
         return 0;
     }
 
-    public void translateToStartFrom(IlyaCoordinate coordinates){
+    public void translateToStartFrom(IlyaCoordinate coordinates, ArrayList<IlyaCoordinate> v){
         tempVertices = new ArrayList<>();
-        for (IlyaCoordinate c: vertices) {
+        for (IlyaCoordinate c: v) {
             tempVertices.add(new IlyaCoordinate(c.getX() + coordinates.getX(), c.getY() + coordinates.getY()));
         }
     }
