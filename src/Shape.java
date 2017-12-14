@@ -53,7 +53,7 @@ public abstract class Shape implements Comparable{
     }
 
     public double area(){
-        return getPolygon(this.vertices).convexHull().getArea();
+        return getPolygon(this.vertices).getArea();
     }
 
     public Polygon getPolygon(ArrayList<IlyaCoordinate> v){
