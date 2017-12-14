@@ -39,14 +39,16 @@ public class CaseSolver {
         System.out.println("Done. Coverage: " + getCoverage());
         OutputHandler handler = new OutputHandler();
         result = handler.formatForProblem(order, placedItems);
+        if(getCoverage()>30){
+            System.out.println(result);
+        }
     }
 
     private void sortDecorations(){
         Collections.sort(decorations);
     }
 
-    private ArrayList<IlyaCoordinate> generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
-        ArrayList<IlyaCoordinate> coordinates = new ArrayList<>();
+    private void generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
         for (int i = 0; i < numberOfAttempts; i++) {
             IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
             f.translateToStartFrom(coordinate);
@@ -54,14 +56,14 @@ public class CaseSolver {
             double interval = 360/precision;
             for (int j = 0; j < precision; j++) {
                 double rotationAngle = interval*i;
-                f.rotate(rotationAngle);
-                if(doesElementFit(f.getPolygon(f.getRotatedCoordinates())))
-                    coordinates.add(coordinate);
+                f.rotateVertices(rotationAngle, f.getTempVertices());
+                if(doesElementFit(f.getPolygon(f.getRotatedCoordinates()))){
+                    f.commitRotatedToMain();
+                    placedItems.add(f);
+                    return;
+                }
             }
-
         }
-
-    return coordinates;
     }
 
     private boolean doesElementFit(Polygon p){
