@@ -30,7 +30,7 @@ public class TaskSplitter implements JobDoneListener{
     public void notifyJobDone(String s, int order) {
         results.set(order-1, s);
         counter++;
-        System.out.println(counter);
+        System.out.println(order);
         if(counter == ilyaFileReader.rooms.size()){
             OutputHandler handler = new OutputHandler();
             try {

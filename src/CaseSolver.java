@@ -22,6 +22,10 @@ public class CaseSolver {
     }
 
     public void solve(int order){
+        if(order!=11){
+            result="";
+            return;
+        }
         for (Furniture f: decorations) {
             f.gravityRotate(1000);
         }
@@ -37,6 +41,9 @@ public class CaseSolver {
         System.out.println("Done. Coverage: " + getCoverage());
         OutputHandler handler = new OutputHandler();
         result = handler.formatForProblem(order, placedItems);
+        if(getCoverage()>30){
+            System.out.println(result);
+        }
     }
 
     private void sortDecorations(){

@@ -85,7 +85,7 @@ public abstract class Shape implements Comparable{
     }
 
     public double value(){
-        return unitCost/area();
+        return unitCost/area()/area();
     }
 
     //it might be sorting the wrong way
