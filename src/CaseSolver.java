@@ -34,7 +34,7 @@ public class CaseSolver {
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
         }
-//        System.out.println("Done. Number of elements: " + placedItems.size());
+        System.out.println("Done. Coverage: " + getCoverage());
         OutputHandler handler = new OutputHandler();
         result = handler.formatForProblem(order, placedItems);
     }
