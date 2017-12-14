@@ -12,6 +12,7 @@ public class Button implements Drawable {
   private int btn_number;
   private int pos_x, pos_y;
   private boolean mouse_touching;
+  private boolean is_active = false;
   
   public Button(int number) {
     btn_number = number;
@@ -27,15 +28,12 @@ public class Button implements Drawable {
     if (mouse_touching) {
       current_fill = HIGHLIGHT_COLOUR;
       if (mousePressed) {
-        current_fill = PRESSED_COLOUR;
-        current_stroke = ACTIVE_COLOUR;
-        //rect.setStrokeWeight(200);
+        //setActive();
         screenManager.switchToScreen(btn_number);
       }
     } else {
       current_fill = NORMAL_COLOUR;
     }
-    
     rect.setStroke(current_stroke);
     rect.setFill(current_fill);
     shape(rect);
@@ -43,6 +41,11 @@ public class Button implements Drawable {
     textSize(55);
     text(String.valueOf(btn_number), pos_x, pos_y + 20);
   }
+  
+  //public void setActive() {
+  //  is_active = true;
+  //  current_fill = ACTIVE_COLOUR;
+  //}
   
   private void checkForMouseTouch() {
     if (mouseX >= pos_x - (width / 2) && mouseX <= pos_x + (width / 2) &&

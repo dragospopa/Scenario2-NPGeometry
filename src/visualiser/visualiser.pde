@@ -20,7 +20,8 @@ void setup() {
   screenManager = new ScreenManager();
   buttonMenu = new MenuBar(WINDOW_WIDTH / 14, round(WINDOW_HEIGHT * 0.85));
   roomSlider = new ScaleSlider(WINDOW_WIDTH * 0.9, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 30, WINDOW_HEIGHT / 2);
-  parseProblems(); //<>// //<>// //<>//
+  parseProblems();
+  parseSolutions(); //<>// //<>// //<>//
 }
 
 void draw() {
@@ -39,7 +40,12 @@ void draw() {
 }
 
 void keyPressed() {
-  if (keyCode == ENTER) {
-    parseSolutions();
+  switch (keyCode) {
+    case ENTER:
+      screenManager.switchActiveScreenDrawMode(DrawMode.SOLUTION);
+      break;
+    case BACKSPACE:
+      screenManager.switchActiveScreenDrawMode(DrawMode.PROBLEM);
+      break; 
   }
 }

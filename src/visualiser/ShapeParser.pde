@@ -42,7 +42,7 @@ public void parseProblems() {
       for (String arg2: contents.split(" ")) {
         objectVertices.add(Float.parseFloat(arg2));
       }
-      screen.addFurniture(new Furniture(objectVertices, cost, screen, false));
+      screen.addFurniture(new Furniture(objectVertices, cost, screen, DrawMode.PROBLEM));
     }
     screenManager.addScreen(screen);
     buttonMenu.addMenuItem(new Button(++num_rooms));
@@ -51,7 +51,6 @@ public void parseProblems() {
 }
 
 public void parseSolutions() {
-  screenManager.clearActiveScreen();
   // parse solution set
   String[] lines = loadStrings("output.txt");
   for (String line : lines) {
@@ -65,7 +64,7 @@ public void parseSolutions() {
       for (String arg2 : arg.split(",")) {
         furnitureVerts.add(Float.parseFloat(arg2));
       }
-      screen.addFurniture(new Furniture(furnitureVerts, 0, screen, true));
+      screen.addFurniture(new Furniture(furnitureVerts, 0, screen, DrawMode.SOLUTION));
     }
   }
 }

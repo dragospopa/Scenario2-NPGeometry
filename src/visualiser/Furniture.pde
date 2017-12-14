@@ -11,22 +11,22 @@ public class Furniture implements Drawable {
   private float pos_x, pos_y;
   private float velocity_x, velocity_y;
   private float m_scale = 1.0;
-  private boolean stationary;
+  private DrawMode drawMode;
   
-  public Furniture(ArrayList<Float> vertices, int cost, Screen screen, boolean stationary) {
+  public Furniture(ArrayList<Float> vertices, int cost, Screen screen, DrawMode drawMode) {
     m_shape = createPolygon(vertices);
     m_colour = lerpColor(MIN_COLOUR, MAX_COLOUR, cost / COST_RANGE);
     m_shape.setFill(m_colour);
     this.screen = screen;
-    this.stationary = stationary;
-    if (!stationary) {
+    this.drawMode = drawMode;
+    if (drawMode == DrawMode.PROBLEM) {
       randomise();
     } 
   }
   
   public void show() {
     m_shape.setVisible(true);
-    if (!stationary) {
+    if (drawMode == DrawMode.PROBLEM) {
       randomise();
     }
   }
@@ -36,6 +36,10 @@ public class Furniture implements Drawable {
     pos_y = random(WINDOW_HEIGHT);
     velocity_x = random(-MAX_SPEED, MAX_SPEED);
     velocity_y = random(-MAX_SPEED, MAX_SPEED);
+  }
+  
+  public DrawMode type() {
+    return drawMode;
   }
   
   private void updatePos() {
@@ -81,7 +85,7 @@ public class Furniture implements Drawable {
     updatePos();
     stroke(0);
     fill(m_colour);
-    if (stationary) {
+    if (drawMode == DrawMode.SOLUTION) {
       float x = screen.getRoomX();
       float y = screen.getRoomY();
       pushMatrix();

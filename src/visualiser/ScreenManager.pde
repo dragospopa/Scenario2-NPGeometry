@@ -9,8 +9,8 @@ public class ScreenManager {
     return screens.get(i - 1);
   }
   
-  public void clearActiveScreen() {
-    screens.get(active_screen).clearFurniture();
+  public void switchActiveScreenDrawMode(DrawMode mode) {
+    screens.get(active_screen).switchDrawMode(mode);
   }
   
   public void addScreen(Screen screen) {
