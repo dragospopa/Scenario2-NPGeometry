@@ -20,7 +20,7 @@ public class TaskThread extends Thread {
         int attempts=0;
         while (attempts < 20) {
             solver.solve(order);
-            currentMax = ((solver.getTotalCost()>currentMax.getTotalCost()&&(solver.getCoverage()>30)) ? solver:currentMax;
+            currentMax = ((solver.getTotalCost()>currentMax.getTotalCost()&&(solver.getCoverage()>30))) ? solver:currentMax;
             this.solver = new CaseSolver(this.solver.room, this.solver.decorations);
             attempts++;
         }
