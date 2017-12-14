@@ -29,7 +29,9 @@ public class CaseSolver {
         for (Furniture f: decorations) {
             IlyaCoordinate bestDropPoint;
 
-            bestDropPoint = hypotheticalLowestCentreOfGravity(f, generateRandomValidDropPoints(f, 1000));
+            generateRandomValidDropPoints(f, 1000, 1000);
+
+            bestDropPoint = hypotheticalLowestCentreOfGravity(f, );
 
             if(bestDropPoint != null)
                 applyGravity(f, bestDropPoint);
@@ -43,13 +45,20 @@ public class CaseSolver {
         Collections.sort(decorations);
     }
 
-    private ArrayList<IlyaCoordinate> generateRandomValidDropPoints(Furniture f, int numberOfAttempts){
+    private ArrayList<IlyaCoordinate> generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
         ArrayList<IlyaCoordinate> coordinates = new ArrayList<>();
         for (int i = 0; i < numberOfAttempts; i++) {
             IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
             f.translateToStartFrom(coordinate);
-            if(doesElementFit(f.getPolygon(f.getTempVertices())))
-                coordinates.add(coordinate);
+
+            double interval = 360/precision;
+            for (int j = 0; j < precision; j++) {
+                double rotationAngle = interval*i;
+                f.rotate(rotationAngle);
+                if(doesElementFit(f.getPolygon(f.getRotatedCoordinates())))
+                    coordinates.add(coordinate);
+            }
+
         }
 
     return coordinates;

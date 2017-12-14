@@ -85,7 +85,7 @@ public abstract class Shape implements Comparable{
     }
 
     public double value(){
-        return unitCost/area()/area();
+        return unitCost*unitCost/area();
     }
 
     //it might be sorting the wrong way
@@ -145,5 +145,9 @@ public abstract class Shape implements Comparable{
 
     public void commitTempToMain(){
         this.vertices = this.tempVertices;
+    }
+
+    public ArrayList<IlyaCoordinate> getRotatedCoordinates() {
+        return rotatedCoordinates;
     }
 }
