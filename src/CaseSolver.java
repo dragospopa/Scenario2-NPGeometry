@@ -1,4 +1,9 @@
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,21 +27,24 @@ public class CaseSolver {
     }
 
     public void solve(int order){
-        for (Furniture f: decorations) {
-            f.gravityRotate(1000);
+        if(order!=11){
+            result=" ";
+            return;
         }
-        sortDecorations(); //suspition that the sort does not work...
-        for (Furniture f: decorations) {
-            IlyaCoordinate bestDropPoint;
 
-            generateRandomValidDropPoints(f, 1000, 1000);
+        sortDecorations();//suspition that the sort does not work...
+        System.out.println("Number of elements to process:" + decorations.size());
+        boolean outcome;
+        for (int i = 0; i < decorations.size(); i++) {
+            Furniture f = decorations.get(i);
+            System.out.print("Working on element: " + i + "; Unit cost: " + f.getRealCost() + "; ");
 
-            bestDropPoint = hypotheticalLowestCentreOfGravity(f, );
-
-            if(bestDropPoint != null)
-                applyGravity(f, bestDropPoint);
+            outcome = generateRandomValidDropPoints(f, 100, 10*1000);
+            System.out.println(outcome + "; Coverage: " + getCoverage());
+            if(outcome)
+                System.out.println("Location: " +placedItems.get(placedItems.size()-1).getVertices());
         }
-        System.out.println("Done. Coverage: " + getCoverage());
+        System.out.println("Done. Coverage: " + getCoverage() + "; Cost: " + getTotalCost());
         OutputHandler handler = new OutputHandler();
         result = handler.formatForProblem(order, placedItems);
         if(getCoverage()>30){
@@ -45,80 +53,91 @@ public class CaseSolver {
     }
 
     private void sortDecorations(){
-        Collections.sort(decorations);
-    }
+        //Collections.sort(decorations);
 
-    private void generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
-        for (int i = 0; i < numberOfAttempts; i++) {
-            IlyaCoordinate coordinate = new IlyaCoordinate(room.getMinX(), room.getMaxX(), room.getMinY(), room.getMaxY());
-            f.translateToStartFrom(coordinate);
-
-            double interval = 360/precision;
-            for (int j = 0; j < precision; j++) {
-                double rotationAngle = interval*i;
-                f.rotateVertices(rotationAngle, f.getTempVertices());
-                if(doesElementFit(f.getPolygon(f.getRotatedCoordinates()))){
-                    f.commitRotatedToMain();
-                    placedItems.add(f);
-                    return;
+        for (int i = 0; i < decorations.size(); i++) {
+            for (int j = i+1; j < decorations.size(); j++) {
+                if(decorations.get(i).compareTo(decorations.get(j))>0){
+                    Furniture f = decorations.get(i);
+                    decorations.set(i, decorations.get(j));
+                    decorations.set(j, f);
                 }
             }
         }
+        for (int i = 0; i <= decorations.size()/2; i++) {
+            Furniture f = decorations.get(i);
+            decorations.set(i, decorations.get(decorations.size()-1-i));
+            decorations.set(decorations.size()-1-i, f);
+        }
+    }
+
+    private boolean generateRandomValidDropPoints(Furniture f, int numberOfAttempts, double precision){
+        int i=0;
+
+        for (IlyaCoordinate c:room.getVertices()) {
+
+            while(i<numberOfAttempts) {
+                IlyaCoordinate coordinate = new IlyaCoordinate(c.getX()-1, c.getX()+1, c.getY()-1, c.getY()+1);
+                if(!checkIfCoordinateInRoom(coordinate))
+                    continue;
+
+                f.translateToStartFrom(coordinate);
+                if(tryRotatingAndCommit(f, precision))
+                    return true;
+
+                i++;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfCoordinateInRoom(IlyaCoordinate coordinate){
+        Coordinate coordinate1 = new Coordinate(coordinate.getX(), coordinate.getY());
+
+        CoordinateSequence coordinateSequence = new CoordinateArraySequence(new Coordinate[]{coordinate1});
+        Point point = new Point(coordinateSequence, new GeometryFactory());
+        return room.getPolygon(room.getVertices()).covers(point);
+    }
+
+    private boolean tryRotatingAndCommit(Furniture f, double precision){
+        double interval = 360/precision;
+        for (int j = 0; j < precision; j++) {
+            double rotationAngle = interval*j;
+            f.rotateVertices(rotationAngle, f.getTempVertices());
+            if(doesElementFit(f.getPolygon(f.getRotatedCoordinates()))){
+                f.commitRotatedToMain();
+                placedItems.add(f);
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean doesElementFit(Polygon p){
-        try {
-            if (!room.getPolygon(room.vertices).contains(p)) //This line throws a NPE not sure where it originates from
-                return false;
-            for (Furniture addedF : placedItems) {
-                if (p.intersects(addedF.getPolygon(addedF.getTempVertices())))
-                    return false;
-            }
-        } catch (Exception e){
-            System.out.println();
+        if (!room.getPolygon(room.getVertices()).contains(p))
             return false;
+        for (Furniture addedF : placedItems) {
+            if (p.overlaps(addedF.getPolygon(addedF.getTempVertices())))
+                return false;
         }
         return true;
     }
 
-    private void applyGravity(Furniture f, IlyaCoordinate dropPoint){
-        f.translateToStartFrom(dropPoint);
-        f.commitTempToMain();
-        placedItems.add(f);
-    }
-
-    private double hypotheticalLowestCentreOfGravity(Furniture f, IlyaCoordinate dropPoint){
-        double shift = 0;
-
-        while (doesElementFit(f.getPolygon(f.getTempVertices()))) {
-            f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY() + shift));
-            shift -= 0.01;
-        }
-        if (shift < 0)
-            shift += 0.01;
-        return shift;
-    }
-
-    private IlyaCoordinate hypotheticalLowestCentreOfGravity(Furniture f, ArrayList<IlyaCoordinate> dropPoints){
-        double min = Double.MAX_VALUE, x;
-        IlyaCoordinate minPoint = null;
-        for (IlyaCoordinate dropPoint : dropPoints) {
-            x = hypotheticalLowestCentreOfGravity(f, dropPoint);
-            if(x < min) {
-                min = x;
-                minPoint = dropPoint;
-            }
-        }
-        return minPoint;
-    }
-
     public double getCoverage() {
-        double roomArea = room.getPolygon(room.vertices).getArea();
+        double roomArea = room.getPolygon(room.getVertices()).getArea();
         double polygonArea = 0;
         for (Furniture furniture: placedItems) {
-            polygonArea+=furniture.getPolygon(furniture.vertices).getArea();
+            polygonArea+=furniture.getPolygon(furniture.getVertices()).getArea();
         }
         return (polygonArea/roomArea)*100;
+    }
+
+    public double getTotalCost() {
+        double sum = 0;
+        for (Furniture furniture: placedItems) {
+            sum += furniture.getRealCost();
+        }
+        return sum;
     }
 
     public String extractResult(){

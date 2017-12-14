@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * Created by tomaszczernuszenko on 11/12/2017.
  */
 public abstract class Shape implements Comparable{
-    ArrayList<IlyaCoordinate> vertices;
-    ArrayList<IlyaCoordinate> tempVertices;
-    ArrayList<IlyaCoordinate> rotatedCoordinates;
+    private ArrayList<IlyaCoordinate> vertices;
+    private ArrayList<IlyaCoordinate> tempVertices;
+    private ArrayList<IlyaCoordinate> rotatedCoordinates;
     int unitCost;
     double realCost;
 
@@ -42,28 +42,12 @@ public abstract class Shape implements Comparable{
         return new IlyaCoordinate(sum_x/vertices.size(),sum_y/vertices.size());
     }
 
-    public void gravityRotate(double precision) {
-        /*double interval = 360/precision;
-        double idealRotation = 0;
-        IlyaCoordinate currentMin = centreOfMass(tempVertices);
-        IlyaCoordinate temp;
-        for (int i = 0;i<precision;i++) {
-            double rotationAngle = interval*i;
-            rotateVertices(rotationAngle, vertices);
-            temp = centreOfMass(this.rotatedCoordinates);
-            if (temp.getY()<currentMin.getY()) {
-                currentMin = temp;
-                idealRotation = rotationAngle;
-            }
-        }*/
-        //this.vertices = rotateVertices(idealRotation, this.vertices);
-    }
-
     public ArrayList<IlyaCoordinate> rotateVertices(double degrees, ArrayList<IlyaCoordinate> verticesToRotate){
         degrees = Math.toRadians(degrees);
         rotatedCoordinates = new ArrayList<>();
         for (IlyaCoordinate coords : verticesToRotate){
-            rotatedCoordinates.add(new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees)));
+            IlyaCoordinate temp = new IlyaCoordinate(coords.getX() * Math.cos(degrees) - coords.getY() * Math.sin(degrees), coords.getX() * Math.sin(degrees) + coords.getY() * Math.cos(degrees));
+            rotatedCoordinates.add(temp);
         }
         return rotatedCoordinates;
     }
@@ -84,7 +68,7 @@ public abstract class Shape implements Comparable{
     }
 
     public double value(){
-        return unitCost*unitCost/area();
+        return unitCost;
     }
 
     //it might be sorting the wrong way
@@ -152,5 +136,13 @@ public abstract class Shape implements Comparable{
 
     public ArrayList<IlyaCoordinate> getRotatedCoordinates() {
         return rotatedCoordinates;
+    }
+
+    public double getRealCost() {
+        return realCost;
+    }
+
+    public ArrayList<IlyaCoordinate> getVertices() {
+        return vertices;
     }
 }

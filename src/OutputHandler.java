@@ -22,7 +22,7 @@ public class OutputHandler {
     }
 
     public  String generatePointSequence(Shape shape) {
-        ArrayList<IlyaCoordinate> points = shape.vertices; //need to decide if we print vertices or tempVertices
+        ArrayList<IlyaCoordinate> points = shape.getVertices(); //need to decide if we print vertices or tempVertices
         StringBuilder pointSequence = new StringBuilder();
         for (IlyaCoordinate coordinate:points) {
             String temp=" (" + coordinate.getX() + ", " + coordinate.getY() +"),";

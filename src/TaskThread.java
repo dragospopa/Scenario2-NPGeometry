@@ -17,10 +17,10 @@ public class TaskThread extends Thread {
     public void run() {
         int attempts=0;
         do {
+            this.solver = new CaseSolver(this.solver.room, this.solver.decorations);
             solver.solve(order);
             attempts++;
-            this.solver = (solver.getCoverage()<30&&attempts<20) ? new CaseSolver(this.solver.room,this.solver.decorations):this.solver;
-        } while (solver.getCoverage()<30&&attempts<20);
+        } while (solver.getCoverage() < 30 && attempts < 20);
         listener.notifyJobDone(extractResult(), order);
     }
 

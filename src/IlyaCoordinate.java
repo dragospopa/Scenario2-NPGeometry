@@ -26,4 +26,12 @@ public class IlyaCoordinate {
     public IlyaCoordinate clone(){
         return new IlyaCoordinate(this.X, this.Y);
     }
+
+    @Override
+    public String toString() {
+        return "IlyaCoordinate{" +
+                "X=" + X +
+                ", Y=" + Y +
+                '}';
+    }
 }
