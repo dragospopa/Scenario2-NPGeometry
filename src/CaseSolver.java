@@ -71,7 +71,14 @@ public class CaseSolver {
     }
 
     private void applyGravity(Furniture f, IlyaCoordinate dropPoint){
-        f.translateToStartFrom(dropPoint);
+        double shift = 0;
+        while (doesElementFit(f.getPolygon(f.getTempVertices()))) {
+            f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY() + shift));
+            shift -= 0.01;
+        }
+        if (shift < 0)
+            shift += 0.01;
+        f.translateToStartFrom(new IlyaCoordinate(dropPoint.getX(), dropPoint.getY() + shift));
         f.commitTempToMain();
         placedItems.add(f);
     }
