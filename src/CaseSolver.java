@@ -162,7 +162,8 @@ public class CaseSolver {
         }
         for (Furniture addedF : placedItems) {
             if (p.intersects(addedF.getPolygon(addedF.getTempVertices())))
-                return false;
+                if(!p.touches(addedF.getPolygon(addedF.getTempVertices())))
+                    return false;
         }
         return true;
     }
