@@ -31,6 +31,16 @@ public class ScreenManager {
     active_screen = i - 1;
   }
   
+  public void setScreenPrompt() {
+    if (screens.get(active_screen).getDrawMode() == DrawMode.PROBLEM) {
+      screenPrompt = "Press RETURN to see solution";
+      promptFill = #31D800;
+    } else {
+      screenPrompt = "Press BACKSPACE to see problem space";
+      promptFill = #0295ED;
+    }
+  }
+  
   public void drawActiveScreen() {
     //println("Drawing screen " + active_screen + "...");
     screens.get(active_screen).draw();

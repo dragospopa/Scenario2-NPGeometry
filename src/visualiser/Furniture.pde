@@ -86,10 +86,9 @@ public class Furniture implements Drawable {
     stroke(0);
     fill(m_colour);
     if (drawMode == DrawMode.SOLUTION) {
-      float x = screen.getRoomX();
-      float y = screen.getRoomY();
+      // translate object so that origin is at room's top-left corner
       pushMatrix();
-      translate(x, y);
+      translate(screen.getRoomX(), screen.getRoomY());
       scale(m_scale);
       shape(m_shape, 0, 0);
       popMatrix();

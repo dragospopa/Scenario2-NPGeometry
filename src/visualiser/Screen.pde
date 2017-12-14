@@ -13,12 +13,11 @@ public enum DrawMode {
 }
 
 public class Screen {
-
   private ArrayList<Furniture> problemSet;
   private ArrayList<Furniture> solutionSet;
   private ArrayList<Furniture> furnitureToDraw;
   private Room room;
-  private DrawMode currentMode = DrawMode.PROBLEM;
+  private DrawMode current_mode = DrawMode.PROBLEM;
   
   public void addRoom(Room room) {
     problemSet = new ArrayList<Furniture>();
@@ -35,8 +34,12 @@ public class Screen {
     }
   }
   
+  public DrawMode getDrawMode() {
+    return current_mode;
+  }
+  
   public void switchDrawMode(DrawMode mode) {
-    currentMode = mode;
+    current_mode = mode;
     if (mode == DrawMode.PROBLEM) {
       furnitureToDraw = problemSet;
     } else {
@@ -66,7 +69,7 @@ public class Screen {
   }
   
   public void draw() {
-    if (currentMode == DrawMode.PROBLEM) {
+    if (current_mode == DrawMode.PROBLEM) {
       for (Furniture item : furnitureToDraw) {
         item.draw();
       }
@@ -77,7 +80,6 @@ public class Screen {
         item.draw();
       }
     }
-    
   }
   
   public float getRoomX() {
