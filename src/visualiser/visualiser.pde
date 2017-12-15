@@ -23,7 +23,7 @@ void setup() {
   buttonMenu = new MenuBar(WINDOW_WIDTH / 14, round(WINDOW_HEIGHT * 0.83));
   roomSlider = new ScaleSlider(WINDOW_WIDTH * 0.9, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 30, WINDOW_HEIGHT / 2);
   parseProblems();
-  parseSolutions(); //<>// //<>// //<>//
+  parseSolutions(); //<>// //<>//
 }
 
 void draw() {

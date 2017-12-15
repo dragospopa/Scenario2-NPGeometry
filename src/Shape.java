@@ -14,7 +14,7 @@ public abstract class Shape implements Comparable{
     ArrayList<IlyaCoordinate> vertices;
     ArrayList<IlyaCoordinate> tempVertices;
     ArrayList<IlyaCoordinate> rotatedCoordinates;
-    int unitCost;
+    public int unitCost;
     double realCost;
 
     double minX, maxX, minY, maxY;

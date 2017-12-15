@@ -4,6 +4,7 @@ public class Furniture implements Drawable {
   private static final float COST_RANGE = 169f; // highest possible cost in sample set is 5408
   private static final color MIN_COLOUR = #B7ECFF; // (light blue)
   private static final color MAX_COLOUR = #FA0D00; // (strong red)
+  private static final color SOLUTION_COLOUR = #7DFF76;//#50FF48;
   
   private final color m_colour;
   private final Screen screen;
@@ -15,13 +16,15 @@ public class Furniture implements Drawable {
   
   public Furniture(ArrayList<Float> vertices, int cost, Screen screen, DrawMode drawMode) {
     m_shape = createPolygon(vertices);
-    m_colour = lerpColor(MIN_COLOUR, MAX_COLOUR, cost / COST_RANGE);
-    m_shape.setFill(m_colour);
     this.screen = screen;
     this.drawMode = drawMode;
     if (drawMode == DrawMode.PROBLEM) {
       randomise();
-    } 
+      m_colour = lerpColor(MIN_COLOUR, MAX_COLOUR, cost / COST_RANGE);
+    } else {
+      m_colour = SOLUTION_COLOUR;
+    }
+    m_shape.setFill(m_colour);
   }
   
   public void show() {

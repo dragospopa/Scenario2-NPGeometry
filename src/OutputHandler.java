@@ -25,6 +25,7 @@ public class OutputHandler {
         ArrayList<IlyaCoordinate> points = shape.vertices; //need to decide if we print vertices or tempVertices
         StringBuilder pointSequence = new StringBuilder();
         for (IlyaCoordinate coordinate:points) {
+            pointSequence.append("#" + shape.unitCost + ": ");
             String temp=" (" + coordinate.getX() + ", " + coordinate.getY() +"),";
             pointSequence.append(temp);
         }

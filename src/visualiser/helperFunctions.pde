@@ -52,19 +52,28 @@ public void parseProblems() {
 
 public void parseSolutions() {
   // parse solution set
+  int cost = 0;
   String[] lines = loadStrings("output.txt");
   for (String line : lines) {
-    int colon_index = line.indexOf(":");
+    if (line == "") continue;
+    int colon_index = line.indexOf(":"); //<>//
     int room_number = Integer.parseInt(line.substring(0, colon_index));
     String contents = line.substring(colon_index + 1);
     Screen screen = screenManager.getScreen(room_number);
     String filtered = contents.replaceAll("[() ]", "");
     for (String arg : filtered.split(";")) {
+      
+      // parse furniture cost (UNCOMMENT IF THIS IMPLEMENTED)
+      //int hash_index = arg.indexOf("#");
+      //colon_index = filtered.indexOf(":");
+      //cost = Integer.parseInt(arg.substring(hash_index + 1, colon_index));
+      //arg = arg.substring(colon_index + 1); //<>//
+      
       ArrayList<Float> furnitureVerts = new ArrayList<Float>();
       for (String arg2 : arg.split(",")) {
         furnitureVerts.add(Float.parseFloat(arg2));
       }
-      screen.addFurniture(new Furniture(furnitureVerts, 0, screen, DrawMode.SOLUTION));
+      screen.addFurniture(new Furniture(furnitureVerts, cost, screen, DrawMode.SOLUTION));
     }
   }
 }
